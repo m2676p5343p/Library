@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.jboss.as.quickstarts</groupId>
+  <artifactId>library</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>library Maven Webapp</name>
+  
+  <properties>
+    <!-- the Maven project should use the minimum Java SE version supported -->
+    <maven.compiler.release>17</maven.compiler.release>
+    <!-- the version for the Server -->
+    <version.server>39.0.0.Final</version.server>
+    <version.bom.ee>${version.server}</version.bom.ee>
+    <version.plugin.wildfly>5.1.0.Final</version.plugin.wildfly>
+  </properties>
+  
+  <repositories>
+  	<repository>
+  		<id>jboss-public-maven-repository</id>
+  		<name>Jboss Public Maven Repository</name>
+  		<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+  		<releases>
+  			<enabled>true</enabled>
+  			<updatePolicy>never</updatePolicy>
+  		</releases>
+  		<snapshots>
+  			<enabled>true</enabled>
+  			<updatePolicy>never</updatePolicy>
+  		</snapshots>
+  		<layout>default</layout>
+  	</repository>
+  </repositories>
+  
+  <pluginRepositories>
+  	<pluginRepository>
+  		<id>jboss-public-maven-repository</id>
+  		<name>JBoss Public Maven Repository</name>
+  		<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+  		<releases>
+  			<enabled>true</enabled>
+  		</releases>
+  		<snapshots>
+  			<enabled>true</enabled>
+  		</snapshots>
+  	</pluginRepository>
+  </pluginRepositories>
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.wildfly.bom</groupId>
+  			<artifactId>wildfly-ee-with-tools</artifactId>
+  			<version>${version.bom.ee}</version>
+  			<type>pom</type>
+  			<scope>import</scope>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
+  
+  <build>
+  	<finalName>${project.artifactId}</finalName>
+  	<pluginManagement>
+  		<plugins>
+  			<plugin>
+  				<groupId>org.wildfly.plugins</groupId>
+  				<artifactId>wildfly-maven-plugin</artifactId>
+  				<version>${version.plugin.wildfly}</version>
+  			</plugin>
+  		</plugins>
+  	</pluginManagement>
+  </build>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>jakarta.servlet</groupId>
+  		<artifactId>jakarta.servlet-api</artifactId>
+  		<scope>provided</scope>
+  	</dependency>
+  	
+  	<dependency>
+        <groupId>jakarta.enterprise</groupId>
+        <artifactId>jakarta.enterprise.cdi-api</artifactId>
+        <scope>provided</scope>
+    </dependency>
+
+    <!-- Import the Common Annotations API (JSR-250), we use provided scope
+    as the API is included in JBoss EAP -->
+    <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <scope>provided</scope>
+    </dependency>
+
+    <!-- Import the JSF API, we use provided scope as the API is included in JBoss EAP -->
+    <dependency>
+        <groupId>jakarta.faces</groupId>
+        <artifactId>jakarta.faces-api</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    
+	<dependency>
+	    <groupId>com.opencsv</groupId>
+	    <artifactId>opencsv</artifactId>
+	    <version>5.9</version>
+	</dependency>
+  </dependencies>
+</project>
