@@ -5,17 +5,23 @@
         xmlns:h="jakarta.faces.html"
         xmlns:f="jakarta.faces.core">
         
-      <head>
+      <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-      	<link rel="stylesheet" href="style.css"/>
+      	<h:outputStylesheet name="css/output.css"/>
         <title>newbook</title>
-      </head>
+      </h:head>
       
       <body>
+		<div class="topnav">
+			<a href="home.xhtml">Home</a>
+			<a class="active" href="newbook.xhtml">New Book</a>
+			<a href="newdvd.xhtml">New DVD</a>
+			<div class="themeToggleContainer">
+				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
+			</div>
+			<h:outputScript name="js/toggle.js"/>
+		</div>
       	<div id="content">
-      		<a href="home.xhtml">Home</a>
-      		<h1>Add Book</h1>
-      		<br/>
       		<h:messages id="messages2" globalOnly="false"/>
       		<h:form id="addbook">
       			<h2>Title:</h2>
@@ -31,6 +37,7 @@
       			<h:inputText id="inputGenre" value="#{library.newGenre}"
       			required="true"/>
       			<br/>
+				<br/>
       			<h:commandButton id="submitButton" value="Submit" action="#{library.addBook}"/>
       		</h:form>
       	</div>

@@ -1,9 +1,10 @@
 package org.jboss.as.quickstarts.library;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import jakarta.annotation.PostConstruct;
@@ -12,8 +13,9 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.Reader;
@@ -42,12 +44,13 @@ public class Library implements Serializable {
 	 * The path for the csv file containing the library items data
 	 */
 	private final Path CSV_PATH = FileSystems.getDefault()
-								  .getPath("C:\\tools\\test\\library\\src\\main\\resources", "items.csv");
-
+								  .getPath("library", "src", "main", "resources", "items.csv");
+	
+	
 	/**
 	 * Stores LibraryItem objects (Books / Dvds)
 	 */
-	private ArrayList<LibraryItem> items;
+	private LibraryList<LibraryItem> items;
 	
 	/**
 	 * Instantiates the items ArrayList. Reads the CSV file and instantiates Book and Dvd objects
@@ -55,27 +58,41 @@ public class Library implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-		items = new ArrayList<LibraryItem>();
+		items = new LibraryList<LibraryItem>();
 		// lines stores the input from the csv file
 		List<String[]> lines;
-		try (Reader reader = Files.newBufferedReader(CSV_PATH)) {
-			CSVParser parser = new CSVParserBuilder().withSeparator(',')
-								   .withIgnoreQuotations(true).build();
-			try (CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1)
-										   .withCSVParser(parser).build()) {
-				// reads all lines from the csv file, excluding the header line
-				lines = csvReader.readAll();
-				// iterates through the lines from the csv file, instantiating Book and Dvd objects
-				// for each one and adding them to the List
-				for (String[] line : lines) {
-					if (line[0].equals("Book")) {
-						items.add(new Book(line[1], line[3], line[2], line[4]));
-					} else if (line[0].equals("DVD")) {
-						items.add(new Dvd(line[1], line[2], Float.parseFloat(line[5])));
+
+		try (InputStream is = Library.class.getResourceAsStream("/items.csv")) {
+			try (Reader reader = new BufferedReader(new InputStreamReader(is))) {
+				CSVParser parser = new CSVParserBuilder().withSeparator(',')
+									.withIgnoreQuotations(true).build();
+				try (CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1)
+											.withCSVParser(parser).build()) {
+					// reads all lines from the csv file, excluding the header line
+					lines = csvReader.readAll();
+					// iterates through the lines from the csv file, instantiating Book and Dvd objects
+					// for each one and adding them to the List
+					for (String[] line : lines) {
+						if (line[0].equals("Book")) {
+							items.add(new Book(
+								line[1], //title
+								line[3], //author
+								line[2], //releaseYear
+								line[4], //genre
+								line[6].equals("y") //available
+							));
+						} else if (line[0].equals("DVD")) {
+							items.add(new Dvd(
+								line[1], //title
+								line[2], //releaseYear
+								Float.parseFloat(line[5]), //length
+								line[6].equals("y") //available
+							));
+						}
 					}
+				} catch (CsvException e) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.toString()));
 				}
-			} catch (CsvException e) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.toString()));
 			}
 		} catch (FileNotFoundException e ) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.toString()));
@@ -133,18 +150,19 @@ public class Library implements Serializable {
 		this.newLength = newLength;
 	}
 	
-	public ArrayList<LibraryItem> getItems() {
+	public List<LibraryItem> getItems() {
 		return this.items;
 	}
-	
-	
 	
 	/**
 	 * Adds a new Book object to the items List
 	 */
 	public void addBook() {
-		items.add(new Book(newTitle, newAuthor, newReleaseYear, newGenre));
-		appendBookToCsv(newTitle, newAuthor, newReleaseYear, newGenre);
+		if (items.add(new Book(newTitle, newAuthor, newReleaseYear, newGenre, true))) {
+			appendBookToCsv(newTitle, newAuthor, newReleaseYear, newGenre);
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Book already exists!"));
+		}
 	}
 	
 	/**
@@ -164,8 +182,11 @@ public class Library implements Serializable {
 	 * Adds a new Dvd object to the items List
 	 */
 	public void addDvd() {
-		items.add(new Dvd(newTitle, newReleaseYear, newLength));
-		appendDvdToCsv(newTitle, newReleaseYear, newLength);
+		if (items.add(new Dvd(newTitle, newReleaseYear, newLength, true))) {
+			appendDvdToCsv(newTitle, newReleaseYear, newLength);
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("DVD already exists!"));
+		}
 	}
 	
 	/**

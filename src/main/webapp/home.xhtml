@@ -5,18 +5,24 @@
         xmlns:h="jakarta.faces.html"
         xmlns:f="jakarta.faces.core">
         
-      <head>
+      <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-      	<link rel="stylesheet" href="style.css"/>
+      	<h:outputStylesheet library="css" name="output.css"/>
         <title>library</title>
-      </head>
+      </h:head>
       
       <body>
-      	<div id="content">
+		<div class="topnav">
+			<a class="active" href="home.xhtml">Home</a>
+			<a href="newbook.xhtml">New Book</a>
+			<a href="newdvd.xhtml">New DVD</a>
+			<div class="themeToggleContainer">
+				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
+			</div>
+			<h:outputScript name="js/toggle.js"/>
+		</div>
+      	<div class="content">
       		<h1>Library</h1>
-      		<a href="newbook.xhtml">New Book</a>
-      		<a href="newdvd.xhtml">New DVD</a>
-      		<br/>
       		<h:messages id="messages" globalOnly="false"/>
       		<br/>
       		<h:dataTable value="#{library.items}" var="item">
@@ -44,6 +50,10 @@
       				<f:facet name="header">Length (minutes)</f:facet>
       				<h:outputText rendered="#{item.type eq 'DVD'}" value="#{item.length}"/>
       			</h:column>
+				<h:column>
+					<f:facet name="header">Available</f:facet>
+					<h:outputText value="#{item.available ? 'y' : 'n'}"/>
+				</h:column>
       		</h:dataTable>
       	</div>
      	<br style="clear: both"/>
