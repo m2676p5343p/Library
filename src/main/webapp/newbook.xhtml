@@ -15,7 +15,6 @@
 		<div class="topnav">
 			<a href="home.xhtml">Home</a>
 			<a class="active" href="newbook.xhtml">New Book</a>
-			<a href="newdvd.xhtml">New DVD</a>
 			<div class="themeToggleContainer">
 				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
 			</div>
@@ -25,16 +24,13 @@
       		<h:messages id="messages2" globalOnly="false"/>
       		<h:form id="addbook">
       			<h2>Title:</h2>
-      			<h:inputText id="inputTitle" value="#{library.newTitle}"
+      			<h:inputText id="inputTitle" value="#{library.title}"
       			required="true"/>
       			<h2>Author:</h2>
-      			<h:inputText id="inputAuthor" value="#{library.newAuthor}"
-      			required="true"/>
-      			<h2>Release Year:</h2>
-      			<h:inputText id="inputReleaseYear" value="#{library.newReleaseYear}"
+      			<h:inputText id="inputAuthor" value="#{library.author}"
       			required="true"/>
       			<h2>Genre:</h2>
-      			<h:inputText id="inputGenre" value="#{library.newGenre}"
+      			<h:inputText id="inputGenre" value="#{library.genre}"
       			required="true"/>
       			<br/>
 				<br/>

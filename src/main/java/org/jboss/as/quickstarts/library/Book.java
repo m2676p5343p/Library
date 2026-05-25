@@ -1,16 +1,42 @@
 package org.jboss.as.quickstarts.library;
 
+import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Represents a book. Extends the LibraryItem class and adds new fields: author
  * and genre.
  */
-public class Book extends LibraryItem{
+@Entity
+@Table(name = "books")
+public class Book {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotBlank
+	@Column(nullable = false)
+	private String title;
+
+	@NotBlank
+	@Column(nullable = false)
 	private String author;
+
+	@NotBlank
+	@Column(nullable = false)
 	private String genre;
 	
-	public Book(String title, String author, String releaseYear, String genre, boolean available) {
-		super(title, releaseYear, "Book", available);
+	public Book() {}
+
+	public Book(String title, String author, String genre) {
+		this.title = title;
 		this.author = author;
 		this.genre = genre;
 	}
@@ -18,6 +44,18 @@ public class Book extends LibraryItem{
 	/**
 	 * Getters and setters
 	 */
+	public Long getId() {
+		return this.id;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getAuthor() {
 		return this.author;
 	}
@@ -35,22 +73,27 @@ public class Book extends LibraryItem{
 	}
 	
 	@Override
-	public boolean equals(Object t) {
-		// If the passed object is null throw an exception
-		if (t == null) {
-			throw new NullPointerException();
-		}
-		// If the object is of type Book then compare all fields
-		if (t.getClass() == getClass()) {
-			Book other = (Book)t;
-			return this.getTitle().equals(other.getTitle()) &&
-				   this.getReleaseYear().equals(other.getReleaseYear()) &&
-				   this.getAuthor().equals(other.getAuthor()) &&
-				   this.getGenre().equals(other.getGenre());
-				   
-		// If the object is not of type Book then return false
-		} else {
-			return false;
-		}
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Book book = (Book)o;
+		return Objects.equals(title, book.title) &&
+			   Objects.equals(author, book.author) &&
+			   Objects.equals(genre, book.genre);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, title, author, genre);
+	}
+
+	@Override
+	public String toString() {
+		return "Book{" +
+			   "id=" + id +
+			   ", title='" + title + "'" +
+			   ", author'" + author + "'" +
+			   ", genre'" + genre + "'" +
+			   "}";
 	}
 }
