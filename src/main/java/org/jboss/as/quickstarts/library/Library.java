@@ -30,6 +30,12 @@ public class Library implements Serializable {
 	private List<Book> books;
 
 	/*
+	 * Stores the selected book when a button is pressed that acts on a
+	 * specific book
+	 */
+	Book selectedBook;
+
+	/*
 	 * Getters and setters
 	 */
 	public String getTitle() {
@@ -59,6 +65,14 @@ public class Library implements Serializable {
 	public List<Book> getBooks() {
 		return this.books;
 	}
+
+	public Book getSelectedBook() {
+		return selectedBook;
+	}
+
+	public void setSelectedBook(Book selectedBook) {
+		this.selectedBook = selectedBook;
+	}
 	
 	/**
 	 * Instantiates the items ArrayList. Reads the CSV file and instantiates Book and Dvd objects
@@ -66,6 +80,19 @@ public class Library implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
+		/*
+		 * Code to initialize Book table with entries if necessary. Only run
+		 * this once.	
+		br.createBook(new Book(
+			"Assassin's Apprentice",
+			"Robin Hobb",
+			"High Fantasy"
+		));
+		br.createBook(new Book(
+			"Royal Assassin",
+			"Robin Hobb",
+			"High Fantasy"
+		)); */
 		books = br.getBookList();
 	}
 
@@ -82,5 +109,27 @@ public class Library implements Serializable {
 			// refreshes the book list
 			books = br.getBookList();
 		}
+		FacesContext.getCurrentInstance().addMessage(
+			null,
+			new FacesMessage("Success!")
+		);
+	}
+
+	public void deleteBook() {
+		br.deleteBook(selectedBook.getId());
+		// refreshes the book list
+		books = br.getBookList();
+	}
+
+	public String editBook() {
+		br.updateBook(selectedBook.getId(), new Book(
+			selectedBook.getTitle(),
+			selectedBook.getAuthor(),
+			selectedBook.getGenre()
+		));
+		return "home?faces-redirect=true";
 	}
 }
+
+//TODO: Add buttons to main table which allow you to edit / delete books
+//TODO: Add a checkout functionality
