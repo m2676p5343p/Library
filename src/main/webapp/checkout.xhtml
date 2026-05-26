@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:h="jakarta.faces.html"
+        xmlns:f="jakarta.faces.core">
+        
+    <h:head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <h:outputStylesheet name="css/output.css"/>
+        <title>checkout</title>
+    </h:head>
+    <body>
+        <div class="topnav">
+			<a href="home.xhtml">Home</a>
+			<a href="newbook.xhtml">New Book</a>
+			<a href="customers.xhtml">Customers</a>
+			<a href="newcustomer.xhtml">New Customer</a>
+            <a class="active" href="checkout.xhtml">Checkout</a>
+			<div class="themeToggleContainer">
+				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
+			</div>
+			<h:outputScript name="js/toggle.js"/>
+		</div>
+        <div id="content">
+            <h:form id="checkoutForm">
+                <h:messages id="messages" globalOnly="false"/>
+                <h:dataTable value="#{checkoutBackingBean.checkouts}" var="checkout">
+                    <h:column>
+                        <f:facet name="header">Customer First Name</f:facet>
+                        <h:outputText value="#{checkout.customer.firstName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Customer Last Name</f:facet>
+                        <h:outputText value="#{checkout.customer.lastName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Book Title</f:facet>
+                        <h:outputText value="#{checkout.book.title}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Checkout Date</f:facet>
+                        <h:outputText value="#{checkout.checkoutDate}"/>
+                    </h:column>
+                </h:dataTable>
+
+                <h2>Book:</h2>
+                <h:selectOneMenu value="#{checkoutBackingBean.bookId}">
+                    <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
+                    <f:selectItems value="#{library.books}" var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
+                </h:selectOneMenu>
+                <h2>Customer:</h2>
+                <h:selectOneMenu value="#{checkoutBackingBean.customerId}">
+                    <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
+                    <f:selectItems value="#{customerBackingBean.customers}" var="customer" itemValue="#{customer.id}" itemLabel="#{customer.firstName} #{customer.lastName}"/>
+                </h:selectOneMenu>
+
+                <br/>
+                <br/>
+                <h:commandButton id="submitButton" value="Submit" action="#{checkoutBackingBean.addCheckout}"/>
+            </h:form>
+        </div>
+    </body>
+</html>

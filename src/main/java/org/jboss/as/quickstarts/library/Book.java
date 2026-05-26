@@ -11,12 +11,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Represents a book. Extends the LibraryItem class and adds new fields: author
- * and genre.
+ * Represents a book with a unique ID, title, author, and genre.
  */
 @Entity
 @Table(name = "books")
 public class Book {
+	/**
+	 * Fields
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,6 +35,9 @@ public class Book {
 	@Column(nullable = false)
 	private String genre;
 	
+	/**
+     * Constructors
+     */
 	public Book() {}
 
 	public Book(String title, String author, String genre) {

@@ -96,7 +96,7 @@ public class Library implements Serializable {
 		books = br.getBookList();
 	}
 
-	public void addBook() {
+	public String addBook() {
 		Book newBook = new Book(this.title, this.author, this.genre);
 		if (books.contains(newBook)) {
 			FacesContext.getCurrentInstance().addMessage(
@@ -109,10 +109,7 @@ public class Library implements Serializable {
 			// refreshes the book list
 			books = br.getBookList();
 		}
-		FacesContext.getCurrentInstance().addMessage(
-			null,
-			new FacesMessage("Success!")
-		);
+		return "home?faces-redirect=true";
 	}
 
 	public void deleteBook() {
@@ -131,5 +128,7 @@ public class Library implements Serializable {
 	}
 }
 
-//TODO: Add buttons to main table which allow you to edit / delete books
-//TODO: Add a checkout functionality
+//TODO: Add available flag to books
+//TODO: Only available books can be checked out
+//TODO: Add due date property to checkout (2 weeks after borrow?)
+//TODO: Add return function
