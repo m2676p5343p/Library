@@ -26,5 +26,6 @@ CREATE TABLE checkouts(
     id BIGSERIAL PRIMARY KEY,
     bookId BIGINT REFERENCES books(id),
     customerId BIGINT REFERENCES customers(id),
-    checkoutDate DATE NOT NULL
+    checkoutDate DATE NOT NULL,
+    dueDate DATE NOT NULL
 );

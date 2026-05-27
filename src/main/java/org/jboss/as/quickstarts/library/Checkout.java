@@ -1,6 +1,6 @@
 package org.jboss.as.quickstarts.library;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -32,7 +32,10 @@ public class Checkout {
     private Customer customer;
 
     @Column(nullable = false)
-    private Date checkoutDate;
+    private java.sql.Date checkoutDate;
+
+    @Column(nullable = false)
+    private java.sql.Date dueDate;
 
     /**
      * Constructors
@@ -42,8 +45,17 @@ public class Checkout {
     public Checkout(Book book, Customer customer) {
         this.book = book;
         this.customer = customer;
+        // Stores current date as checkoutDate
         java.util.Date utilDate = new java.util.Date();
-        this.checkoutDate = new Date(utilDate.getTime());
+        this.checkoutDate = new java.sql.Date(utilDate.getTime());
+
+        // Converts checkoutDate to LocalDate in order to add 2 weeks to it
+        LocalDate localDate = this.checkoutDate.toLocalDate();
+        LocalDate localDateTwoWeeksLater = localDate.plusWeeks(2);
+
+        // The 2 weeks later date is converted back to java.sql.Date and used
+        // as the dueDate property
+        this.dueDate = java.sql.Date.valueOf(localDateTwoWeeksLater);
     }
 
     public Long getId() {
@@ -58,8 +70,12 @@ public class Checkout {
         return customer;
     }
 
-    public Date getCheckoutDate() {
+    public java.sql.Date getCheckoutDate() {
         return this.checkoutDate;
+    }
+
+    public java.sql.Date getDueDate() {
+        return this.dueDate;
     }
 
     @Override
