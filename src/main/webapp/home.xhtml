@@ -5,46 +5,57 @@
         xmlns:h="jakarta.faces.html"
         xmlns:f="jakarta.faces.core">
         
-      <head>
+      <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-      	<link rel="stylesheet" href="style.css"/>
+      	<h:outputStylesheet library="css" name="output.css"/>
         <title>library</title>
-      </head>
+      </h:head>
       
       <body>
-      	<div id="content">
+		<div class="topnav">
+			<a class="active" href="home.xhtml">Home</a>
+			<a href="newbook.xhtml">New Book</a>
+			<a href="customers.xhtml">Customers</a>
+			<a href="newcustomer.xhtml">New Customer</a>
+			<a href="checkout.xhtml">Checkout</a>
+			<div class="themeToggleContainer">
+				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
+			</div>
+			<h:outputScript name="js/toggle.js"/>
+		</div>
+      	<div class="content">
       		<h1>Library</h1>
-      		<a href="newbook.xhtml">New Book</a>
-      		<a href="newdvd.xhtml">New DVD</a>
-      		<br/>
-      		<h:messages id="messages" globalOnly="false"/>
-      		<br/>
-      		<h:dataTable value="#{library.items}" var="item">
-      			<h:column>
-      				<f:facet name="header">Type</f:facet>
-      				<h:outputText value="#{item.type}"/>
-      			</h:column>
-      			<h:column>
-      				<f:facet name="header">Title</f:facet>
-      				<h:outputText value="#{item.title}"/>
-      			</h:column>
-      			<h:column>
-      				<f:facet name="header">Release Year</f:facet>
-      				<h:outputText value="#{item.releaseYear}"/>
-      			</h:column>
-      			<h:column>
-      				<f:facet name="header">Author</f:facet>
-      				<h:outputText rendered="#{item.type eq 'Book'}" value="#{item.author}"/>
-      			</h:column>
-      			<h:column>
-      				<f:facet name="header">Genre</f:facet>
-      				<h:outputText rendered="#{item.type eq 'Book'}" value="#{item.genre}"/>
-      			</h:column>
-      			<h:column>
-      				<f:facet name="header">Length (minutes)</f:facet>
-      				<h:outputText rendered="#{item.type eq 'DVD'}" value="#{item.length}"/>
-      			</h:column>
-      		</h:dataTable>
+			<h:form id="bookTable">
+				<h:messages id="messages" globalOnly="false"/>
+				<br/>
+				<h:dataTable value="#{library.books}" var="book">
+					<h:column>
+						<f:facet name="header">ID</f:facet>
+						<h:outputText value="#{book.id}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Title</f:facet>
+						<h:outputText value="#{book.title}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Author</f:facet>
+						<h:outputText value="#{book.author}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Genre</f:facet>
+						<h:outputText value="#{book.genre}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Actions</f:facet>
+						<h:commandButton value="Delete" action="#{library.deleteBook}">
+							<f:setPropertyActionListener target="#{library.selectedBook}" value="#{book}"/>
+						</h:commandButton>
+						<h:commandButton value="Edit" action="editbook?faces-redirect=true">
+							<f:setPropertyActionListener target="#{library.selectedBook}" value="#{book}"/>
+						</h:commandButton>
+					</h:column>
+				</h:dataTable>
+			</h:form>
       	</div>
      	<br style="clear: both"/>
       </body>

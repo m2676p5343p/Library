@@ -8,16 +8,16 @@
       <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
       	<h:outputStylesheet name="css/output.css"/>
-        <title>newbook</title>
+        <title>newcustomer</title>
       </h:head>
       
       <body>
 		<div class="topnav">
 			<a href="home.xhtml">Home</a>
-			<a class="active" href="newbook.xhtml">New Book</a>
+			<a href="newbook.xhtml">New Book</a>
 			<a href="customers.xhtml">Customers</a>
-			<a href="newcustomer.xhtml">New Customer</a>
-			<a href="checkout.xhtml">Checkout</a>
+            <a class="active" href="newcustomer.xhtml">New Customer</a>
+            <a href="checkout.xhtml">Checkout</a>
 			<div class="themeToggleContainer">
 				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
 			</div>
@@ -25,19 +25,16 @@
 		</div>
       	<div id="content">
       		<h:messages id="messages2" globalOnly="false"/>
-      		<h:form id="addbook">
-      			<h2>Title:</h2>
-      			<h:inputText id="inputTitle" value="#{library.title}"
+      		<h:form id="addcustomer">
+      			<h2>First Name:</h2>
+      			<h:inputText id="inputFirstName" value="#{customerBackingBean.firstName}"
       			required="true"/>
-      			<h2>Author:</h2>
-      			<h:inputText id="inputAuthor" value="#{library.author}"
-      			required="true"/>
-      			<h2>Genre:</h2>
-      			<h:inputText id="inputGenre" value="#{library.genre}"
+      			<h2>Last Name:</h2>
+      			<h:inputText id="inputLastName" value="#{customerBackingBean.lastName}"
       			required="true"/>
       			<br/>
 				<br/>
-      			<h:commandButton id="submitButton" value="Submit" action="#{library.addBook}"/>
+      			<h:commandButton id="submitButton" value="Submit" action="#{customerBackingBean.addCustomer}"/>
       		</h:form>
       	</div>
      	<br style="clear: both"/>

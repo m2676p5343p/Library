@@ -12,10 +12,11 @@
   <name>library Maven Webapp</name>
   
   <properties>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- the Maven project should use the minimum Java SE version supported -->
     <maven.compiler.release>17</maven.compiler.release>
     <!-- the version for the Server -->
-    <version.server>39.0.0.Final</version.server>
+    <version.server>40.0.0.Final</version.server>
     <version.bom.ee>${version.server}</version.bom.ee>
     <version.plugin.wildfly>5.1.0.Final</version.plugin.wildfly>
   </properties>
@@ -67,13 +68,53 @@
   	<finalName>${project.artifactId}</finalName>
   	<pluginManagement>
   		<plugins>
-  			<plugin>
-  				<groupId>org.wildfly.plugins</groupId>
-  				<artifactId>wildfly-maven-plugin</artifactId>
-  				<version>${version.plugin.wildfly}</version>
-  			</plugin>
+  			
   		</plugins>
   	</pluginManagement>
+  	
+  	<plugins>
+		<plugin>
+			<groupId>org.wildfly.plugins</groupId>
+			<artifactId>wildfly-maven-plugin</artifactId>
+			<version>${version.plugin.wildfly}</version>
+			<configuration>
+				<discover-provisioning-info>
+					<addOns>
+						<addOn>postgresql:default</addOn>
+					</addOns>
+				</discover-provisioning-info>
+			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<goal>package</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		
+  		<plugin>
+  			<groupId>us.hebi.sass</groupId>
+            <artifactId>sass-cli-maven-plugin</artifactId>
+            <version>1.0.4</version>
+            <configuration>
+            	<sassVersion>1.99.0</sassVersion>
+            	<args>
+            		<arg>${project.basedir}/src/scss/input.scss:${project.basedir}/src/main/webapp/resources/css/output.css</arg>
+            		<arg>--no-source-map</arg>
+            	</args>
+            </configuration>
+            <executions>
+            	<execution>
+            		<id>sass-exec</id>
+            		<phase>generate-resources</phase>
+            		<goals>
+            			<goal>run</goal>
+            		</goals>
+            	</execution>
+            </executions>
+  		</plugin>
+  	</plugins>
   </build>
   
   <dependencies>
@@ -108,6 +149,36 @@
 	    <groupId>com.opencsv</groupId>
 	    <artifactId>opencsv</artifactId>
 	    <version>5.9</version>
+	</dependency>
+
+	<dependency>
+		<groupId>jakarta.ws.rs</groupId>
+		<artifactId>jakarta.ws.rs-api</artifactId>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>jakarta.persistence</groupId>
+		<artifactId>jakarta.persistence-api</artifactId>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>jakarta.transaction</groupId>
+		<artifactId>jakarta.transaction-api</artifactId>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>jakarta.validation</groupId>
+		<artifactId>jakarta.validation-api</artifactId>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>org.postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>42.7.1</version>
 	</dependency>
   </dependencies>
 </project>

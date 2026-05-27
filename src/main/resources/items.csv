@@ -1,8 +1,8 @@
-type,title,releaseYear,author,genre,length
-Book,Assassin's Apprentice,1995,Robin Hobb,High Fantasy,
-Book,Royal Assassin,1996,Robin Hobb,High Fantasy,
-Book,Assassin's Quest,1997,Robin Hobb,High Fantasy,
-Book,Blood Over Bright Haven,2023,M.L. Wang,Dark Academia,
-"DVD","Project Hail Mary","2026","","","156.0"
-"Book","Hazelthorn","2025","C.G. Drews","Horror",""
-"DVD","The Martian","2016","","","151.0"
+type,title,releaseYear,author,genre,length,available,
+Book,Assassin's Apprentice,1995,Robin Hobb,High Fantasy,0.0,"y",
+Book,Royal Assassin,1996,Robin Hobb,High Fantasy,0.0,"y",
+Book,Assassin's Quest,1997,Robin Hobb,High Fantasy,0.0,"y",
+Book,Blood Over Bright Haven,2023,M.L. Wang,Dark Academia,0.0,"y",
+"DVD","Project Hail Mary","2026","","","156.0","y",
+"Book","Hazelthorn","2025","C.G. Drews","Horror",","y",
+"DVD","The Martian","2016","","","151.0","y"
