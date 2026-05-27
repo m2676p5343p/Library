@@ -16,7 +16,14 @@ public class BookResource {
 
     public List<Book> getBookList() {
         return em.createQuery(
-            "SELECT b FROM Book b",
+            "SELECT b FROM Book b ORDER BY id",
+            Book.class
+        ).getResultList();
+    }
+
+    public List<Book> getAvailableBookList() {
+        return em.createQuery(
+            "SELECT b FROM Book b WHERE b.available = TRUE",
             Book.class
         ).getResultList();
     }
@@ -44,6 +51,7 @@ public class BookResource {
         existing.setTitle(book.getTitle());
         existing.setAuthor(book.getAuthor());
         existing.setGenre(book.getGenre());
+        existing.setAvailable(book.getAvailable());
     }
 
     @Transactional

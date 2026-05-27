@@ -34,16 +34,20 @@ public class Book {
 	@NotBlank
 	@Column(nullable = false)
 	private String genre;
+
+	@Column(nullable = false)
+	private boolean available;
 	
 	/**
      * Constructors
      */
 	public Book() {}
 
-	public Book(String title, String author, String genre) {
+	public Book(String title, String author, String genre, boolean available) {
 		this.title = title;
 		this.author = author;
 		this.genre = genre;
+		this.available = available;
 	}
 	
 	/**
@@ -75,6 +79,14 @@ public class Book {
 	
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	public boolean getAvailable() {
+		return this.available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 	
 	@Override

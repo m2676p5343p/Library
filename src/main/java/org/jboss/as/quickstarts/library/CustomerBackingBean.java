@@ -5,12 +5,13 @@ import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @SuppressWarnings("serial")
 @Named
-@SessionScoped
+@ViewScoped
 public class CustomerBackingBean implements Serializable {
     /**
      * Fields to store user input when adding a new customer

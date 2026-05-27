@@ -41,12 +41,22 @@
                         <f:facet name="header">Checkout Date</f:facet>
                         <h:outputText value="#{checkout.checkoutDate}"/>
                     </h:column>
+                    <h:column>
+                        <f:facet name="header">Due Date</f:facet>
+                        <h:outputText value="#{checkout.dueDate}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Actions</f:facet>
+                        <h:commandButton value="Return" action="#{checkoutBackingBean.returnBook}">
+                            <f:setPropertyActionListener target="#{checkoutBackingBean.selectedCheckout}" value="#{checkout}"/>
+                        </h:commandButton>
+                    </h:column>
                 </h:dataTable>
 
                 <h2>Book:</h2>
                 <h:selectOneMenu value="#{checkoutBackingBean.bookId}">
                     <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
-                    <f:selectItems value="#{library.books}" var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
+                    <f:selectItems value="#{checkoutBackingBean.availableBooks}" var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
                 </h:selectOneMenu>
                 <h2>Customer:</h2>
                 <h:selectOneMenu value="#{checkoutBackingBean.customerId}">
