@@ -3,7 +3,6 @@ package org.jboss.as.quickstarts.library;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -115,7 +114,3 @@ public class Library implements Serializable {
 		return "home?faces-redirect=true";
 	}
 }
-
-//TODO: Only available books can be checked out
-//TODO: Add due date property to checkout (2 weeks after borrow?)
-//TODO: Add return function

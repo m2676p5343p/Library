@@ -16,7 +16,7 @@ public class BookResource {
 
     public List<Book> getBookList() {
         return em.createQuery(
-            "SELECT b FROM Book b",
+            "SELECT b FROM Book b ORDER BY id",
             Book.class
         ).getResultList();
     }

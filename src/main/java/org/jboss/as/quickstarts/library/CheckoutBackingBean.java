@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -25,6 +24,8 @@ public class CheckoutBackingBean implements Serializable {
 
     private List<Checkout> checkouts;
     private List<Book> availableBooks;
+
+    private Checkout selectedCheckout;
 
     /**
      * Getters and setters
@@ -53,6 +54,14 @@ public class CheckoutBackingBean implements Serializable {
         return this.availableBooks;
     }
 
+    public Checkout getSelectedCheckout() {
+        return selectedCheckout;
+    }
+
+    public void setSelectedCheckout(Checkout selectedCheckout) {
+        this.selectedCheckout = selectedCheckout;
+    }
+
     @PostConstruct
     public void init() {
         checkouts = cr.getCheckoutList();
@@ -75,6 +84,18 @@ public class CheckoutBackingBean implements Serializable {
         br.updateBook(bookId, book);
         availableBooks = br.getAvailableBookList();
 
+        return "checkout?faces-redirect=true";
+    }
+
+    public String returnBook() {
+        // Sets the book to available and updates the database
+        Book returningBook = selectedCheckout.getBook();
+        returningBook.setAvailable(true);
+        br.updateBook(returningBook.getId(), returningBook);
+
+        // Deletes the checkout record from the database and refreshes the list
+        cr.deleteCheckout(selectedCheckout.getId());
+        checkouts = cr.getCheckoutList();
         return "checkout?faces-redirect=true";
     }
 }
