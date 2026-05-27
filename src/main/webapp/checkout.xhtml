@@ -46,7 +46,7 @@
                 <h2>Book:</h2>
                 <h:selectOneMenu value="#{checkoutBackingBean.bookId}">
                     <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
-                    <f:selectItems value="#{library.books}" var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
+                    <f:selectItems value="#{checkoutBackingBean.availableBooks}" var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
                 </h:selectOneMenu>
                 <h2>Customer:</h2>
                 <h:selectOneMenu value="#{checkoutBackingBean.customerId}">

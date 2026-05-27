@@ -24,7 +24,7 @@ public class Checkout {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "bookID")
+    @JoinColumn(name = "bookId")
     private Book book;
 
     @ManyToOne

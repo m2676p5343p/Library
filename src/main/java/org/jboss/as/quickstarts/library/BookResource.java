@@ -21,6 +21,13 @@ public class BookResource {
         ).getResultList();
     }
 
+    public List<Book> getAvailableBookList() {
+        return em.createQuery(
+            "SELECT b FROM Book b WHERE b.available = TRUE",
+            Book.class
+        ).getResultList();
+    }
+
     public Book getBookById(Long id) throws NotFoundException {
         Book book = em.find(Book.class, id);
         if (book == null) {
@@ -44,6 +51,7 @@ public class BookResource {
         existing.setTitle(book.getTitle());
         existing.setAuthor(book.getAuthor());
         existing.setGenre(book.getGenre());
+        existing.setAvailable(book.getAvailable());
     }
 
     @Transactional
