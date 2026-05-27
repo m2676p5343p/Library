@@ -24,11 +24,11 @@ public class Checkout {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "book")
+    @JoinColumn(name = "bookID")
     private Book book;
 
     @ManyToOne
-    @JoinColumn(name = "customer")
+    @JoinColumn(name = "customerId")
     private Customer customer;
 
     @Column(nullable = false)
