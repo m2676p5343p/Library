@@ -14,7 +14,7 @@
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- the Maven project should use the minimum Java SE version supported -->
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>25</maven.compiler.release>
     <!-- the version for the Server -->
     <version.server>40.0.0.Final</version.server>
     <version.bom.ee>${version.server}</version.bom.ee>
