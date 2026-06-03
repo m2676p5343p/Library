@@ -1,0 +1,18 @@
+<!-- /WEB-INF/topnav.xhtml -->
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="topnav">
+        <h:link outcome="home" value="Home" styleClass="#{view.viewId eq '/home.xhtml' ? 'active' : ''}"/>
+        <h:link outcome="newbook" value="New Book" styleClass="#{view.viewId eq '/newbook.xhtml' ? 'active' : ''}"/>
+        <h:link outcome="customers" value="Customers" styleClass="#{view.viewId eq '/customers.xhtml' ? 'active' : ''}"/>
+        <h:link outcome="newcustomer" value="New Customer" styleClass="#{view.viewId eq '/newcustomer.xhtml' ? 'active' : ''}"/>
+        <h:link outcome="checkout" value="Checkout" styleClass="#{view.viewId eq '/checkout.xhtml' ? 'active' : ''}"/>
+
+        <div class="themeToggleContainer">
+            <h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
+        </div>
+        <h:outputScript name="js/toggle.js"/>
+    </div>
+</ui:composition>

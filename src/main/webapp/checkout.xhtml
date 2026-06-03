@@ -10,17 +10,8 @@
         <title>checkout</title>
     </h:head>
     <body>
-        <div class="topnav">
-			<a href="home.xhtml">Home</a>
-			<a href="newbook.xhtml">New Book</a>
-			<a href="customers.xhtml">Customers</a>
-			<a href="newcustomer.xhtml">New Customer</a>
-            <a class="active" href="checkout.xhtml">Checkout</a>
-			<div class="themeToggleContainer">
-				<h:commandButton id="themeToggle" image="#{resource['images:theme.png']}"/>
-			</div>
-			<h:outputScript name="js/toggle.js"/>
-		</div>
+        <ui:include src="/WEB-INF/topnav.xhtml"/>
+		<ui:insert name="aah"/>
         <div id="content">
             <h:form id="checkoutForm">
                 <h:messages id="messages" globalOnly="false"/>
