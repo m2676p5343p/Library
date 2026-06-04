@@ -25,8 +25,8 @@
                         <h:outputText value="#{checkout.customer.lastName}"/>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Book Title</f:facet>
-                        <h:outputText value="#{checkout.book.title}"/>
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{checkout.item.title}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Checkout Date</f:facet>
@@ -38,16 +38,16 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Actions</f:facet>
-                        <h:commandButton value="Return" action="#{checkoutBackingBean.returnBook}">
+                        <h:commandButton value="Return" action="#{checkoutBackingBean.returnItem}">
                             <f:setPropertyActionListener target="#{checkoutBackingBean.selectedCheckout}" value="#{checkout}"/>
                         </h:commandButton>
                     </h:column>
                 </h:dataTable>
 
-                <h2>Book:</h2>
-                <h:selectOneMenu value="#{checkoutBackingBean.bookId}">
+                <h2>Item:</h2>
+                <h:selectOneMenu value="#{checkoutBackingBean.itemId}">
                     <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
-                    <f:selectItems value="#{checkoutBackingBean.availableBooks}" var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
+                    <f:selectItems value="#{checkoutBackingBean.availableItems}" var="item" itemValue="#{item.id}" itemLabel="#{item.title}"/>
                 </h:selectOneMenu>
                 <h2>Customer:</h2>
                 <h:selectOneMenu value="#{checkoutBackingBean.customerId}">

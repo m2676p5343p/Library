@@ -3,8 +3,6 @@ package org.jboss.as.quickstarts.library;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -17,6 +15,15 @@ public class NewItemBackingBean implements Serializable {
     private String title;
     private String author;
     private String genre;
+    private float duration;
+    public float getDuration() {
+        return duration;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
+
     private String newItemType;
     private String[] types;
     private String formPath;
@@ -24,6 +31,8 @@ public class NewItemBackingBean implements Serializable {
     public String getFormPath() {
         if ("book".equals(newItemType)) {
             return "/WEB-INF/newbookform.xhtml";
+        } else if ("dvd".equals(newItemType)) {
+            return "/WEB-INF/newdvdform.xhtml";
         }
         return null;
     }
@@ -73,13 +82,16 @@ public class NewItemBackingBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        types = new String[] {"book"};
+        types = new String[] {"book", "dvd"};
         newItemType = types[0];
     }
 
     public String addItem() {
         if (newItemType.equals("book")) {
             newItem = new Book(title, author, genre, true);
+        }
+        else if (newItemType.equals("dvd")) {
+            newItem = new Dvd(title, duration, genre, true);
         }
         resource.createItem(newItem);
         return "home?faces-redirect=true";

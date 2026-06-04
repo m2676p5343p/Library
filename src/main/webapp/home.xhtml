@@ -30,7 +30,11 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">Author</f:facet>
-						<h:outputText value="#{item.author}"/>
+						<h:outputText value="#{item.type eq 'book' ? item.author : '-'}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Duration</f:facet>
+						<h:outputText value="#{item.type eq 'dvd' ? item.duration : '-'}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Genre</f:facet>

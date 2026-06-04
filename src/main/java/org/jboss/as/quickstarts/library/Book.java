@@ -29,7 +29,7 @@ public class Book extends LibraryItem {
 
 	public Book(String title, String author, String genre, boolean available) {
 		this.author = author;
-		super(title, genre, available, "book");
+		super(title, genre, available);
 	}
 	
 	/**
@@ -42,6 +42,11 @@ public class Book extends LibraryItem {
 	
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	@Override
+	public String getType() {
+		return "book";
 	}
 	
 	@Override

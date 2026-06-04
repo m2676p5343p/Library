@@ -10,12 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="library_items")
 @Inheritance(strategy=InheritanceType.JOINED)
-public class LibraryItem {
+public abstract class LibraryItem {
     /**
      * Fields
      */
@@ -39,18 +40,18 @@ public class LibraryItem {
      * here so the frontend can determine the type of item when deciding which
      * properties to display
      */
-    //private String type;
+    @Transient
+    protected String type;
 
     /**
      * Constructors
      */
     public LibraryItem() {}
 
-    public LibraryItem(String title, String genre, boolean available, String type) {
+    public LibraryItem(String title, String genre, boolean available) {
         this.title = title;
         this.genre = genre;
         this.available = available;
-        //this.type = type;
     }
 
     /**
@@ -84,9 +85,8 @@ public class LibraryItem {
         this.available = available;
     }
 
-    /*public String getType() {
-        return this.type;
-    }*/
+    @Transient
+    public abstract String getType();
 
     @Override
     public boolean equals(Object o) {

@@ -19,8 +19,11 @@
 				<h:messages id="messages2" globalOnly="false"/>
 				<h:selectOneMenu value="#{newItemBackingBean.newItemType}">
 					<f:selectItems value="#{newItemBackingBean.types}" var="type" itemValue="#{type}"/>
+					<f:ajax event="change" execute="@this" render="dynamic_form"/>
 				</h:selectOneMenu>
-				<ui:include src="#{newItemBackingBean.formPath}"/>
+				<h:panelGroup id="dynamic_form">
+					<ui:include id="formholder" src="#{newItemBackingBean.formPath}"/>
+				</h:panelGroup>
 				<br/>
 				<br/>
 				<h:commandButton id="submitButton" value="Submit" action="#{newItemBackingBean.addItem}"/>

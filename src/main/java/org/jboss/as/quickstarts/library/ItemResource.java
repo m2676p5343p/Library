@@ -33,17 +33,14 @@ public class ItemResource {
         return items; */
 
         return em.createQuery(
-            "SELECT i FROM LibraryItem i",
+            "SELECT i FROM LibraryItem i ORDER BY id",
             LibraryItem.class
         ).getResultList();
     }
 
     public List<LibraryItem> getAvailableItemList() {
         return em.createQuery(
-            "SELECT li.id, li.title, b.author, li.genre, li.available " +
-            "FROM library_items li " +
-            "LEFT JOIN books b ON b.id = li.id " +
-            "WHERE li.available = TRUE",
+            "SELECT i FROM LibraryItem i WHERE available = TRUE ORDER BY id",
             LibraryItem.class
         ).getResultList();
     }
@@ -62,14 +59,24 @@ public class ItemResource {
     }
 
     @Transactional
-    public void updateItem(Long id, @Valid LibraryItem item) throws NotFoundException {
-        LibraryItem existing = em.find(LibraryItem.class, id);
-        if (existing == null) {
+    public void setUnavailable(Long id) throws NotFoundException {
+        LibraryItem item = em.find(LibraryItem.class, id);
+        if (item == null) {
             throw new NotFoundException("Item with id " + id + " not found");
         }
 
-        existing.setTitle(item.getTitle());
-        existing.setGenre(item.getGenre());
-        em.persist(existing);
+        item.setAvailable(false);
+        em.persist(item);
+    }
+
+    @Transactional
+    public void setAvailable(Long id) throws NotFoundException {
+        LibraryItem item = em.find(LibraryItem.class, id);
+        if (item == null) {
+            throw new NotFoundException("Item with id " + id + " not found");
+        }
+
+        item.setAvailable(true);
+        em.persist(item);
     }
 }
