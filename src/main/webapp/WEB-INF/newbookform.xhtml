@@ -1,0 +1,14 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h2>Title:</h2>
+    <h:inputText id="inputTitle" value="#{newItemBackingBean.title}"
+    required="true"/>
+    <h2>Author:</h2>
+    <h:inputText id="inputAuthor" value="#{newItemBackingBean.author}"
+    required="true"/>
+    <h2>Genre:</h2>
+    <h:inputText id="inputGenre" value="#{newItemBackingBean.genre}"
+    required="true"/>
+</ui:composition>

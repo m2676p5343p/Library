@@ -8,28 +8,23 @@
       <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
       	<h:outputStylesheet name="css/output.css"/>
-        <title>newbook</title>
+        <title>New Item</title>
       </h:head>
       
       <body>
 		<ui:include src="/WEB-INF/topnav.xhtml"/>
 		<ui:insert name="aah"/>
       	<div id="content">
-      		<h:messages id="messages2" globalOnly="false"/>
-      		<h:form id="addbook">
-      			<h2>Title:</h2>
-      			<h:inputText id="inputTitle" value="#{library.title}"
-      			required="true"/>
-      			<h2>Author:</h2>
-      			<h:inputText id="inputAuthor" value="#{library.author}"
-      			required="true"/>
-      			<h2>Genre:</h2>
-      			<h:inputText id="inputGenre" value="#{library.genre}"
-      			required="true"/>
-      			<br/>
+      		<h:form id="new_item">
+				<h:messages id="messages2" globalOnly="false"/>
+				<h:selectOneMenu value="#{newItemBackingBean.newItemType}">
+					<f:selectItems value="#{newItemBackingBean.types}" var="type" itemValue="#{type}"/>
+				</h:selectOneMenu>
+				<ui:include src="#{newItemBackingBean.formPath}"/>
 				<br/>
-      			<h:commandButton id="submitButton" value="Submit" action="#{library.addBook}"/>
-      		</h:form>
+				<br/>
+				<h:commandButton id="submitButton" value="Submit" action="#{newItemBackingBean.addItem}"/>
+			</h:form>
       	</div>
      	<br style="clear: both"/>
       </body>
