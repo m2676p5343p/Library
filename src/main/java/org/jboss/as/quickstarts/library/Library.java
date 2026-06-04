@@ -21,19 +21,20 @@ public class Library implements Serializable {
 	private String title;
 	private String author;
 	private String genre;
+	private float duration;
 
 	/**
-	 * Stores Book objects
+	 * Stores LibraryItem objects
 	 */
+	private List<LibraryItem> items;
 	@Inject
 	private BookResource br;
-	private List<Book> books;
 
 	/*
-	 * Stores the selected book when a button is pressed that acts on a
-	 * specific book
+	 * Stores the selected item when a button is pressed that acts on a
+	 * specific item
 	 */
-	Book selectedBook;
+	LibraryItem selectedItem;
 
 	/*
 	 * Getters and setters
@@ -62,16 +63,24 @@ public class Library implements Serializable {
 		this.genre = genre;
 	}
 
-	public List<Book> getBooks() {
-		return this.books;
+	public float getDuration() {
+		return duration;
 	}
 
-	public Book getSelectedBook() {
-		return selectedBook;
+	public void setDuration(float duration) {
+		this.duration = duration;
 	}
 
-	public void setSelectedBook(Book selectedBook) {
-		this.selectedBook = selectedBook;
+	public List<LibraryItem> getItems() {
+		return this.items;
+	}
+
+	public LibraryItem getSelectedItem() {
+		return selectedItem;
+	}
+
+	public void setSelectedItem(LibraryItem selectedItem) {
+		this.selectedItem = selectedItem;
 	}
 	
 	/**
@@ -79,33 +88,41 @@ public class Library implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-		books = br.getBookList();
+		items = br.getItemList();
 	}
 
 	public String addBook() {
 		Book newBook = new Book(this.title, this.author, this.genre, true);
-		if (books.contains(newBook)) {
+		if (items.contains(newBook)) {
 			FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage("Book already exists in database!")
 			);
 		} else {
 			// calls BookResource to add the new book to the database
-			br.createBook(newBook);
+			br.createItem(newBook);
 			// refreshes the book list
-			books = br.getBookList();
+			items = br.getItemList();
 		}
 		return "home?faces-redirect=true";
 	}
 
-	public void deleteBook() {
-		br.deleteBook(selectedBook.getId());
-		// refreshes the book list
-		books = br.getBookList();
+	public String addDvd() {
+		Dvd newDvd = new Dvd(this.title, this.duration, this.genre, true);
+		if (items.contains(newDvd)) {
+			FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage("Dvd already exists in database!")
+			);
+		} else {
+			br.createItem(newDvd);
+			items = br.getItemList();
+		}
+		return "home?faces-redirect=true";
 	}
 
 	public String editBook() { 
-		br.updateBook(selectedBook.getId(),new Book(
+		br.updateBook(see.getId(),new Book(
 			selectedBook.getTitle(),
 			selectedBook.getAuthor(),
 			selectedBook.getGenre(),

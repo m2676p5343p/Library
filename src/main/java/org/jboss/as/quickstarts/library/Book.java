@@ -18,7 +18,7 @@ public class Book extends LibraryItem {
 	 */
 	@NotBlank
 	@Column(nullable = false)
-	private String author;
+	protected String author;
 
 	/**
      * Constructors
@@ -28,7 +28,7 @@ public class Book extends LibraryItem {
 	public Book(String title, String author, String genre, boolean available) {
 		this.author = author;
 
-		super(title, genre, available);
+		super(title, genre, available, "book");
 	}
 	
 	/**

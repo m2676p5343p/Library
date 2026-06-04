@@ -19,7 +19,7 @@ public class Dvd extends LibraryItem {
     public Dvd(String title, float duration, String genre, boolean available) {
         this.duration = duration;
 
-        super(title, genre, available);
+        super(title, genre, available, "dvd");
     }
 
     /**

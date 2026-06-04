@@ -14,39 +14,38 @@ public class BookResource {
     @PersistenceContext
     EntityManager em;
 
-    public List<Book> getBookList() {
+    public List<LibraryItem> getItemList() {
         return em.createQuery(
-            "SELECT b FROM Book b ORDER BY id",
-            Book.class
+            "SELECT b FROM LibraryItem b ORDER BY id",
+            LibraryItem.class
         ).getResultList();
     }
 
-    public List<Book> getAvailableBookList() {
+    public List<LibraryItem> getAvailableItemList() {
         return em.createQuery(
-            "SELECT b FROM Book b WHERE b.available = TRUE",
-            Book.class
+            "SELECT b FROM LibraryItem b WHERE b.available = TRUE",
+            LibraryItem.class
         ).getResultList();
     }
 
-    public Book getBookById(Long id) throws NotFoundException {
-        Book book = em.find(Book.class, id);
-        if (book == null) {
-            throw new NotFoundException("Book with id " + id + " not found");
+    public LibraryItem getItemById(Long id) throws NotFoundException {
+        LibraryItem item = em.find(LibraryItem.class, id);
+        if (item == null) {
+            throw new NotFoundException("Item with id " + id + " not found");
         }
-
-        return book;
+        return item;
     }
 
     @Transactional
-    public void createBook(@Valid Book book) {
-        em.persist(book);
+    public void createItem(@Valid LibraryItem item) {
+        em.persist(item);
     }
 
     @Transactional
     public void updateBook(Long id, @Valid Book book) throws NotFoundException {
         Book existing = em.find(Book.class, id);
         if (existing == null) {
-            throw new NotFoundException("Book with id " + id + " not found");
+            throw new NotFoundException();
         }
         existing.setTitle(book.getTitle());
         existing.setAuthor(book.getAuthor());
@@ -55,11 +54,23 @@ public class BookResource {
     }
 
     @Transactional
-    public void deleteBook(Long id) {
-        Book book = em.find(Book.class, id);
-        if (book == null) {
-            throw new NotFoundException("Book with id " + id + " not found");
+    public void updateDvd(Long id, @Valid Dvd dvd) throws NotFoundException {
+        Dvd existing = em.find(Dvd.class, id);
+        if (existing == null) {
+            throw new NotFoundException();
         }
-        em.remove(book);
+        existing.setTitle(dvd.getTitle());
+        existing.setDuration(dvd.getDuration());
+        existing.setGenre(dvd.getGenre());
+        existing.setAvailable(dvd.getAvailable());
+    }
+
+    @Transactional
+    public void deleteItem(Long id) {
+        LibraryItem item = em.find(LibraryItem.class, id);
+        if (item == null) {
+            throw new NotFoundException("Item with id " + id + " not found");
+        }
+        em.remove(item);
     }
 }

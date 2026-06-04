@@ -31,15 +31,18 @@ public class LibraryItem {
 	@Column(nullable = false)
 	protected boolean available;
 
+    private String type;
+
     /**
      * Constructors
      */
     public LibraryItem() {}
 
-    public LibraryItem(String title, String genre, boolean available) {
+    public LibraryItem(String title, String genre, boolean available, String type) {
         this.title = title;
         this.genre = genre;
         this.available = available;
+        this.type = type;
     }
 
     /**
@@ -71,6 +74,14 @@ public class LibraryItem {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
