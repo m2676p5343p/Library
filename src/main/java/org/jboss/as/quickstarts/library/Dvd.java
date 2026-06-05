@@ -20,10 +20,16 @@ public class Dvd extends LibraryItem {
     /**
      * Constructors
      */
+    // Blank constructor is required
     public Dvd() {}
 
-    public Dvd(String title, float duration, String genre, boolean available) {
+    public Dvd(String title, float duration, String genre, boolean available)
+    throws NullPointerException, IllegalArgumentException {
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be greater than 0");
+        }
         this.duration = duration;
+
         super(title, genre, available);
     }
 
@@ -34,7 +40,10 @@ public class Dvd extends LibraryItem {
         return this.duration;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(float duration) throws IllegalArgumentException {
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be greater than 0");
+        }
         this.duration = duration;
     }
 
@@ -46,11 +55,10 @@ public class Dvd extends LibraryItem {
     @Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (!(o instanceof Dvd)) return false;
 		Dvd dvd = (Dvd)o;
-		return Objects.equals(this.title, dvd.title) &&
-			   this.duration == dvd.duration &&
-			   Objects.equals(this.genre, dvd.genre);
+		return super.equals(dvd) &&
+			   Float.compare(dvd.duration, this.duration) == 0;
 	}
 
 	@Override

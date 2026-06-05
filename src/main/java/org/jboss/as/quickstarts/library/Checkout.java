@@ -38,30 +38,43 @@ public class Checkout {
     @Column(nullable = false)
     private java.sql.Date dueDate;
 
+    /**
+     * This flag represents whether or not the checked out item is overdue.
+     * When the frontend references this flag, getOverdue is called which
+     * actually calculates whether the current date is later than the due
+     * date.
+     */
     @Transient
     private boolean overdue;
 
     /**
      * Constructors
      */
+    // Blank constructor is required
     public Checkout() {}
 
-    public Checkout(LibraryItem item, Customer customer) {
+    public Checkout(LibraryItem item, Customer customer) throws NullPointerException {
+        if (item == null || customer == null) {
+            throw new NullPointerException("Item / Customer must not be null");
+        }
         this.item = item;
         this.customer = customer;
+
         // Stores current date as checkoutDate
-        java.util.Date utilDate = new java.util.Date();
-        this.checkoutDate = new java.sql.Date(utilDate.getTime());
+        this.checkoutDate = new java.sql.Date(
+            (new java.util.Date()).getTime()
+        );
 
-        // Converts checkoutDate to LocalDate in order to add 2 weeks to it
-        LocalDate localDate = this.checkoutDate.toLocalDate();
-        LocalDate localDateTwoWeeksLater = localDate.plusWeeks(2);
-
-        // The 2 weeks later date is converted back to java.sql.Date and used
-        // as the dueDate property
-        this.dueDate = java.sql.Date.valueOf(localDateTwoWeeksLater);
+        // Converts checkoutDate to LocalDate in order to add 2 weeks to it andd
+        // stores it as the due date
+        this.dueDate = java.sql.Date.valueOf(
+            this.checkoutDate.toLocalDate().plusWeeks(2)
+        );
     }
 
+    /**
+     * Getters and setters
+     */
     public Long getId() {
         return id;
     }
@@ -82,6 +95,9 @@ public class Checkout {
         return this.dueDate;
     }
 
+    /**
+     * When called, determines whether the current date is after the due date
+     */
     @Transient
     public boolean getOverdue() {
         java.sql.Date currentDate = new java.sql.Date(
@@ -110,8 +126,9 @@ public class Checkout {
 		return "Checkout{" +
 			   "id=" + id +
 			   ", customer='" + customer.toString() + "'" +
-			   ", item'" + item.toString() + "'" +
-			   ", checkoutDate'" + checkoutDate + "'" +
+			   ", item='" + item.toString() + "'" +
+			   ", checkoutDate='" + checkoutDate + "'" +
+               ", dueDate='" + dueDate + "'" +
 			   "}";
 	}
 }

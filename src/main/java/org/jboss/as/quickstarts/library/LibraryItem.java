@@ -36,19 +36,28 @@ public abstract class LibraryItem {
 	protected boolean available;
 
     /**
-     * Stores the type of library item as a string (e.g. 'book'). This is only
-     * here so the frontend can determine the type of item when deciding which
-     * properties to display
+     * This field only exists to backup the getType() method. When the frontend accesses
+     * item.type, it calls getType which is an abstract method that must be implemented
+     * by subclasses. The subclass implementation returns a String representing the type
+     * of object it is ('book', 'dvd', etc.)
+     * Marked @Transient so it is not stored in the database
      */
     @Transient
-    protected String type;
+    private String type;
 
     /**
      * Constructors
      */
+    // Blank constructor is required
     public LibraryItem() {}
 
-    public LibraryItem(String title, String genre, boolean available) {
+    public LibraryItem(String title, String genre, boolean available)
+    throws NullPointerException, IllegalArgumentException {
+        if (title == null || genre == null) {
+            throw new NullPointerException("Item properties must not be null");
+        } else if (title.isBlank() || genre.isBlank()) {
+            throw new IllegalArgumentException("Item properties must not be blank or empty");
+        }
         this.title = title;
         this.genre = genre;
         this.available = available;
@@ -65,7 +74,13 @@ public abstract class LibraryItem {
         return this.title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    throws NullPointerException, IllegalArgumentException {
+        if (title == null) {
+            throw new NullPointerException("Title must not be null");
+        } else if (title.isBlank()) {
+            throw new IllegalArgumentException("Title must not be blank or empty");
+        }
         this.title = title;
     }
 
@@ -73,7 +88,13 @@ public abstract class LibraryItem {
         return this.genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(String genre)
+    throws NullPointerException, IllegalArgumentException {
+        if (genre == null) {
+            throw new NullPointerException("Genre must not be null");
+        } else if (genre.isBlank()) {
+            throw new IllegalArgumentException("Genre must not be blank or empty");
+        }
         this.genre = genre;
     }
 
@@ -85,13 +106,23 @@ public abstract class LibraryItem {
         this.available = available;
     }
 
+    /**
+     * Abstract method required to be implemented by subtypes. Subtypes will
+     * return a String representing what kind of library item they are
+     */
     @Transient
     public abstract String getType();
 
+    /**
+     * Doesn't compare id's since there is no way for duplicate id's to exist
+     * with the database constraints. Obviously it is possible for an item to
+     * share genre and title but until more fields are added (such as ISBN) this
+     * is as good as it gets.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof LibraryItem)) return false;
         LibraryItem item = (LibraryItem)o;
         return Objects.equals(this.title, item.title) &&
                Objects.equals(this.genre, item.genre);
@@ -105,7 +136,6 @@ public abstract class LibraryItem {
     @Override
     public String toString() {
         return "Item{" +
-               //"type='" + this.type + "'" +
                ", id='" + this.id + "'" +
                ", title='" + this.title + "'" +
                ", genre='" + this.genre + "'" +

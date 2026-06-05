@@ -13,9 +13,10 @@ import java.util.List;
 @Named
 @ViewScoped
 public class Library implements Serializable {
-
+	// Used for executing queries on the database
 	@Inject
 	private ItemResource resource;
+	// Stores all library items
 	private List<LibraryItem> items;
 
 	/*

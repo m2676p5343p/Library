@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,10 +20,16 @@ public class CustomerBackingBean implements Serializable {
     private String firstName;
     private String lastName;
 
+    // Used to execute queries on the database
     @Inject
     private CustomerResource cr;
+
+    // Stores the list of customers
     private List<Customer> customers;
 
+    /**
+     * Getters and setters
+     */
     public String getFirstName() {
         return firstName;
     }
@@ -42,15 +50,42 @@ public class CustomerBackingBean implements Serializable {
         return this.customers;
     }
 
+    /**
+     * Runs when the bean is initialized to load customer list
+     */
     @PostConstruct
     public void init() {
         customers = cr.getCustomerList();
     }
 
+    /**
+     * Adds a new customer to the database
+     */
     public String addCustomer() {
-        Customer newCustomer = new Customer(this.firstName, this.lastName);
-        cr.createCustomer(newCustomer);
-        customers = cr.getCustomerList();
-        return "customers?faces-redirect=true";
+        try {
+            // Creates the new Customer object
+            Customer newCustomer = new Customer(this.firstName, this.lastName);
+
+            // Persists the new Customer in the database
+            cr.createCustomer(newCustomer);
+
+            // Refreshes the customer list
+            customers = cr.getCustomerList();
+            
+            // Reloads the page
+            return "customers?faces-redirect=true";
+        } catch (NullPointerException e) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(e.getMessage())
+            );
+            return null;
+        } catch (IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(e.getMessage())
+            );
+            return null;
+        }
     }
 }

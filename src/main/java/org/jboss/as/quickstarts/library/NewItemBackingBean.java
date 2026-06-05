@@ -3,6 +3,8 @@ package org.jboss.as.quickstarts.library;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -11,24 +13,25 @@ import jakarta.inject.Named;
 @Named
 @ViewScoped
 public class NewItemBackingBean implements Serializable {
+    /**
+     * Fields
+     */
+    // Stores the newly created item
     private LibraryItem newItem;
     private String title;
     private String author;
     private String genre;
     private float duration;
-    public float getDuration() {
-        return duration;
-    }
 
-    public void setDuration(float duration) {
-        this.duration = duration;
-    }
-
+    // The type of the new item
     private String newItemType;
+    // Stores all 
     private String[] types;
     @SuppressWarnings("unused")
     private String formPath;
 
+    //TODO: There must be a better way to do this. Investigate whether these
+    //forms can be loaded just in XHTML based on the drop-down box selection
     public String getFormPath() {
         if ("book".equals(newItemType)) {
             return "/WEB-INF/newbookform.xhtml";
@@ -41,6 +44,9 @@ public class NewItemBackingBean implements Serializable {
     @Inject
     private ItemResource resource;
 
+    /**
+     * Getters and setters
+     */
     public LibraryItem getNewItem() {
         return newItem;
     }
@@ -69,6 +75,14 @@ public class NewItemBackingBean implements Serializable {
         this.genre = genre;
     }
 
+    public float getDuration() {
+        return duration;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
+
     public String getNewItemType() {
         return this.newItemType;
     }
@@ -88,13 +102,27 @@ public class NewItemBackingBean implements Serializable {
     }
 
     public String addItem() {
-        if (newItemType.equals("book")) {
-            newItem = new Book(title, author, genre, true);
+        try {
+            if (newItemType.equals("book")) {
+                newItem = new Book(title, author, genre, true);
+            }
+            else if (newItemType.equals("dvd")) {
+                newItem = new Dvd(title, duration, genre, true);
+            }
+            resource.createItem(newItem);
+            return "home?faces-redirect=true";
+        } catch (NullPointerException e) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(e.getMessage())
+            );
+            return null;
+        } catch (IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(e.getMessage())
+            );
+            return null;
         }
-        else if (newItemType.equals("dvd")) {
-            newItem = new Dvd(title, duration, genre, true);
-        }
-        resource.createItem(newItem);
-        return "home?faces-redirect=true";
     }
 }

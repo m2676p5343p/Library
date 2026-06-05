@@ -34,9 +34,16 @@ public class Customer {
     /**
      * Constructors
      */
+    // Blank constructor is required
     public Customer() {}
 
-    public Customer(String firstName, String lastName) {
+    public Customer(String firstName, String lastName)
+    throws NullPointerException, IllegalArgumentException {
+        if (firstName == null || lastName == null) {
+            throw new NullPointerException("Customer details must not be null");
+        } else if (firstName.isBlank() || lastName.isBlank()) {
+            throw new IllegalArgumentException("Customer details must not be empty or blank");
+        }
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -52,7 +59,13 @@ public class Customer {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName)
+    throws NullPointerException, IllegalArgumentException {
+        if (firstName == null) {
+            throw new NullPointerException("First name must not be null");
+        } else if (firstName.isBlank()) {
+            throw new IllegalArgumentException("First name must not be blank or empty");
+        }
         this.firstName = firstName;
     }
 
@@ -60,7 +73,13 @@ public class Customer {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName)
+    throws NullPointerException, IllegalArgumentException {
+        if (lastName == null) {
+            throw new NullPointerException("Last name must not be null");
+        } else if (lastName.isBlank()) {
+            throw new IllegalArgumentException("Last name must not be blank or empty");
+        }
         this.lastName = lastName;
     }
 
@@ -69,7 +88,8 @@ public class Customer {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Customer customer = (Customer)o;
-		return Objects.equals(id, customer.getId());
+		return Objects.equals(customer.getFirstName(), this.firstName) &&
+               Objects.equals(customer.getLastName(), this.lastName);
     }
 
 	@Override

@@ -25,22 +25,35 @@ public class Book extends LibraryItem {
 	/**
      * Constructors
      */
+	// Blank constructor is required
 	public Book() {}
 
-	public Book(String title, String author, String genre, boolean available) {
+	public Book(String title, String author, String genre, boolean available)
+	throws NullPointerException, IllegalArgumentException {
+		if (author == null) {
+			throw new NullPointerException("Author must not be null");
+		} else if (author.isBlank()) {
+			throw new IllegalArgumentException("Author must not be empty or blank");
+		}
 		this.author = author;
+		
 		super(title, genre, available);
 	}
 	
 	/**
 	 * Getters and setters
 	 */
-
 	public String getAuthor() {
 		return this.author;
 	}
 	
-	public void setAuthor(String author) {
+	public void setAuthor(String author) 
+	throws NullPointerException, IllegalArgumentException {
+		if (author == null) {
+			throw new NullPointerException("Author must not be null");
+		} else if (author.isBlank()) {
+			throw new IllegalArgumentException("Author must not be empty or blank");
+		}
 		this.author = author;
 	}
 
@@ -52,11 +65,10 @@ public class Book extends LibraryItem {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (!(o instanceof Book)) return false;
 		Book book = (Book)o;
-		return Objects.equals(this.title, book.title) &&
-			   Objects.equals(this.author, book.author) &&
-			   Objects.equals(this.genre, book.genre);
+		return super.equals(book) &&
+			   Objects.equals(this.author, book.getAuthor());
 	}
 
 	@Override

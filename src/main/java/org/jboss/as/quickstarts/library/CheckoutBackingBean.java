@@ -4,27 +4,42 @@ import java.io.Serializable;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.ws.rs.NotFoundException;
 
 @SuppressWarnings("serial")
 @Named
 @ViewScoped
 public class CheckoutBackingBean implements Serializable {
+    /**
+     * These fields store the ID's of the item and customer that are selected
+     * in the drop-down boxes
+     */
     private Long itemId;
     private Long customerId;
 
+    /**
+     * These resources are used to execute queries on the database
+     */
     @Inject
-    private CheckoutResource cr;
+    private CheckoutResource checkoutResource;
     @Inject
-    private ItemResource resource;
+    private ItemResource itemResource;
     @Inject
     private CustomerResource customerResource;
 
+    // Stores the existing checkouts
     private List<Checkout> checkouts;
+
+    // Stores all items that are currently available
     private List<LibraryItem> availableItems;
 
+    // Stores the selected checkout for modification (e.g. if the user opts to
+    // return an item)
     private Checkout selectedCheckout;
 
     /**
@@ -62,42 +77,86 @@ public class CheckoutBackingBean implements Serializable {
         this.selectedCheckout = selectedCheckout;
     }
 
+    /**
+     * Populates the checkouts and availableItems Lists when the Bean is initialized
+     */
     @PostConstruct
     public void init() {
-        checkouts = cr.getCheckoutList();
-        availableItems = resource.getAvailableItemList();
+        checkouts = checkoutResource.getCheckoutList();
+        availableItems = itemResource.getAvailableItemList();
     }
 
+    /**
+     * Adds a new checkout to the database
+     */
     public String addCheckout() {
-        // Retrieves item and customer objects based on their selected ID's, and creates
-        // a new checkout object
-        LibraryItem item = resource.getItemById(itemId);
-        Customer customer = customerResource.getCustomerById(customerId);
-        Checkout checkout = new Checkout(item, customer);
+        if (itemId == null || customerId == null) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage("Need to select both item and customer!")
+            );
+            return null;
+        } else {
+            try {
+                // Retrieves item and customer objects based on their selected ID's, and creates
+                // a new checkout object
+                LibraryItem item = itemResource.getItemById(itemId);
+                Customer customer = customerResource.getCustomerById(customerId);
+                Checkout checkout = new Checkout(item, customer);
 
-        // Creates a new checkout record and updates the list
-        cr.createCheckout(checkout);
-        checkouts = cr.getCheckoutList();
+                // Creates a new checkout record and updates the list
+                checkoutResource.createCheckout(checkout);
+                checkouts = checkoutResource.getCheckoutList();
 
-        // Sets the item to unavailable and updates the database
-        resource.setUnavailable(
-            item.getId()
-        );
-        availableItems = resource.getAvailableItemList();
+                // Sets the item to unavailable and updates the database
+                itemResource.setUnavailable(
+                    item.getId()
+                );
 
-        return "checkout?faces-redirect=true";
+                // Refreshes the list of available items and reloads the page
+                availableItems = itemResource.getAvailableItemList();
+                return "checkout?faces-redirect=true";
+            } catch (NotFoundException e) {
+                FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(e.getMessage())
+                );
+                return null;
+            }
+        }
     }
 
+    /**
+     * Removes a checkout from the database
+     */
     public String returnItem() {
-        // Sets the item to available and updates the database
-        resource.setAvailable(
-            selectedCheckout.getItem().getId()
-        );
-        availableItems = resource.getAvailableItemList();
+        if (selectedCheckout == null) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage("Selected checkout is null!")
+            );
+            return null;
+        }
+        try {
+            // Sets the item to available and updates the database
+            itemResource.setAvailable(
+                selectedCheckout.getItem().getId()
+            );
+            // Refreshes list of available items
+            availableItems = itemResource.getAvailableItemList();
 
-        // Deletes the checkout record from the database and refreshes the list
-        cr.deleteCheckout(selectedCheckout.getId());
-        checkouts = cr.getCheckoutList();
-        return "checkout?faces-redirect=true";
+            // Deletes the checkout record from the database and refreshes the list
+            checkoutResource.deleteCheckout(selectedCheckout.getId());
+            checkouts = checkoutResource.getCheckoutList();
+
+            // Reloads the page
+            return "checkout?faces-redirect=true";
+        } catch (NotFoundException e) {
+            FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(e.getMessage())
+            );
+            return null;
+        }
     }
 }
