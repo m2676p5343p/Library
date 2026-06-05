@@ -2,13 +2,19 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h2>Title:</h2>
-    <h:inputText id="inputTitle" value="#{newItemBackingBean.title}"
-    required="true"/>
-    <h2>Duration:</h2>
-    <h:inputText id="inputDuration" value="#{newItemBackingBean.duration}"
-    required="true"/>
-    <h2>Genre:</h2>
-    <h:inputText id="inputGenre" value="#{newItemBackingBean.genre}"
-    required="true"/>
+    <div class="inputPair">
+        <h:outputLabel for="inputTitle" value="Title:"/>
+        <h:inputText id="inputTitle" value="#{newItemBackingBean.title}"
+        required="true"/>
+    </div>
+    <div class="inputPair">
+        <h:outputLabel for="inputDuration" value="Duration:"/>
+        <h:inputText id="inputDuration" value="#{newItemBackingBean.duration}"
+        required="true"/>
+    </div>
+    <div class="inputPair">
+        <h:outputLabel for="inputGenre" value="Genre:"/>
+        <h:inputText id="inputGenre" value="#{newItemBackingBean.genre}"
+        required="true"/>
+    </div>
 </ui:composition>

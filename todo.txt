@@ -1,0 +1,12 @@
+Improve styling:
+3. Drop down boxes are ugly
+
+Functionality:
+1. Customers with overdue items can't rent more items
+2. Add magazine item (take note of how difficult it is)
+3. Add back capability to edit items 
+
+Code:
+1. Add more comments and clean up formatting
+2. Need to address the hard-coding of "book", "dvd", etc. in the NewItemBackingBean
+3. Properly implement equals, hashCode, and toString in the entity classes

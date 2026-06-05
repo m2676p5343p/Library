@@ -8,25 +8,27 @@
       <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
       	<h:outputStylesheet name="css/output.css"/>
+		<h:outputStylesheet name="css/form.css"/>
         <title>New Item</title>
       </h:head>
       
       <body>
 		<ui:include src="/WEB-INF/topnav.xhtml"/>
-		<ui:insert name="aah"/>
       	<div id="content">
+			<h2>New Item:</h2>
       		<h:form id="new_item">
 				<h:messages id="messages2" globalOnly="false"/>
-				<h:selectOneMenu value="#{newItemBackingBean.newItemType}">
-					<f:selectItems value="#{newItemBackingBean.types}" var="type" itemValue="#{type}"/>
-					<f:ajax event="change" execute="@this" render="dynamic_form"/>
-				</h:selectOneMenu>
-				<h:panelGroup id="dynamic_form">
+				<div class="inputPair">
+					<h:outputLabel for="typeSelector" value="Type:"/>
+					<h:selectOneMenu id="typeSelector" value="#{newItemBackingBean.newItemType}">
+						<f:selectItems value="#{newItemBackingBean.types}" var="type" itemValue="#{type}"/>
+						<f:ajax event="change" execute="@this" render="dynamic_form"/>
+					</h:selectOneMenu>
+				</div>
+				<h:panelGroup id="dynamic_form" class="dynamic_form">
 					<ui:include id="formholder" src="#{newItemBackingBean.formPath}"/>
 				</h:panelGroup>
-				<br/>
-				<br/>
-				<h:commandButton id="submitButton" value="Submit" action="#{newItemBackingBean.addItem}"/>
+				<h:commandButton class="submitButton" value="Submit" action="#{newItemBackingBean.addItem}"/>
 			</h:form>
       	</div>
      	<br style="clear: both"/>

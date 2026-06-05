@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "checkouts")
@@ -36,6 +37,9 @@ public class Checkout {
 
     @Column(nullable = false)
     private java.sql.Date dueDate;
+
+    @Transient
+    private boolean overdue;
 
     /**
      * Constructors
@@ -76,6 +80,14 @@ public class Checkout {
 
     public java.sql.Date getDueDate() {
         return this.dueDate;
+    }
+
+    @Transient
+    public boolean getOverdue() {
+        java.sql.Date currentDate = new java.sql.Date(
+            new java.util.Date().getTime()
+        );
+        return currentDate.after(this.dueDate);
     }
 
     @Override

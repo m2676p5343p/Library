@@ -1,0 +1,15 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="inputPair">
+        <h:outputLabel for="inputFirstName" value="First Name:"/>
+        <h:inputText id="inputFirstName" value="#{customerBackingBean.firstName}"
+        required="true"/>
+    </div>
+    <div class="inputPair">
+        <h:outputLabel for="inputLastName" value="Last Name:"/>
+        <h:inputText id="inputLastName" value="#{customerBackingBean.lastName}"
+        required="true"/>
+    </div>
+</ui:composition>

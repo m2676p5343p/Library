@@ -15,7 +15,6 @@
 		<ui:include src="/WEB-INF/topnav.xhtml"/>
 		<ui:insert name="aah"/>
       	<div class="content">
-      		<h1>Library</h1>
 			<h:form id="bookTable">
 				<h:messages id="messages" globalOnly="false"/>
 				<br/>
@@ -23,6 +22,10 @@
 					<h:column>
 						<f:facet name="header">ID</f:facet>
 						<h:outputText value="#{item.id}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Type</f:facet>
+						<h:outputText value="#{item.type}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Title</f:facet>
@@ -42,7 +45,10 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">Available</f:facet>
-						<h:outputText value="#{item.available ? 'y' : 'n'}"/>
+						<h:outputText 
+							styleClass="#{item.available ? 'outputTextAvailable' : 'outputTextUnavailable'}"
+							value="#{item.available ? 'y' : 'n'}"
+						/>
 					</h:column>
 				</h:dataTable>
 			</h:form>

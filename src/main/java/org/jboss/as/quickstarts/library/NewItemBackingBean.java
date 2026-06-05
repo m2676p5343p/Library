@@ -26,6 +26,7 @@ public class NewItemBackingBean implements Serializable {
 
     private String newItemType;
     private String[] types;
+    @SuppressWarnings("unused")
     private String formPath;
 
     public String getFormPath() {

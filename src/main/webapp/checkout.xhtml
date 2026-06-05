@@ -7,6 +7,7 @@
         
     <h:head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <h:outputStylesheet name="css/output.css"/>
+        <h:outputStylesheet name="css/form.css"/>
         <title>checkout</title>
     </h:head>
     <body>
@@ -25,6 +26,10 @@
                         <h:outputText value="#{checkout.customer.lastName}"/>
                     </h:column>
                     <h:column>
+                        <f:facet name="header">Type</f:facet>
+                        <h:outputText value="#{checkout.item.type}"/>
+                    </h:column>
+                    <h:column>
                         <f:facet name="header">Title</f:facet>
                         <h:outputText value="#{checkout.item.title}"/>
                     </h:column>
@@ -37,6 +42,13 @@
                         <h:outputText value="#{checkout.dueDate}"/>
                     </h:column>
                     <h:column>
+                        <f:facet name="header">Overdue</f:facet>
+                        <h:outputText
+                            value="#{checkout.overdue ? 'y' : 'n'}"
+                            styleClass="#{checkout.overdue ? 'outputTextUnavailable' : 'outputTextAvailable'}"
+                        />
+                    </h:column>
+                    <h:column>
                         <f:facet name="header">Actions</f:facet>
                         <h:commandButton value="Return" action="#{checkoutBackingBean.returnItem}">
                             <f:setPropertyActionListener target="#{checkoutBackingBean.selectedCheckout}" value="#{checkout}"/>
@@ -44,20 +56,21 @@
                     </h:column>
                 </h:dataTable>
 
-                <h2>Item:</h2>
-                <h:selectOneMenu value="#{checkoutBackingBean.itemId}">
-                    <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
-                    <f:selectItems value="#{checkoutBackingBean.availableItems}" var="item" itemValue="#{item.id}" itemLabel="#{item.title}"/>
-                </h:selectOneMenu>
-                <h2>Customer:</h2>
-                <h:selectOneMenu value="#{checkoutBackingBean.customerId}">
-                    <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
-                    <f:selectItems value="#{customerBackingBean.customers}" var="customer" itemValue="#{customer.id}" itemLabel="#{customer.firstName} #{customer.lastName}"/>
-                </h:selectOneMenu>
-
-                <br/>
-                <br/>
-                <h:commandButton id="submitButton" value="Submit" action="#{checkoutBackingBean.addCheckout}"/>
+                <div class="inputPair">
+                    <h:outputLabel for="itemSelect" value="Item:"/>
+                    <h:selectOneMenu id="itemSelect" value="#{checkoutBackingBean.itemId}">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
+                        <f:selectItems value="#{checkoutBackingBean.availableItems}" var="item" itemValue="#{item.id}" itemLabel="#{item.type} : #{item.title}"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="inputPair">
+                    <h:outputLabel for="customerSelect" value="Customer:"/>
+                    <h:selectOneMenu id="customerSelect" value="#{checkoutBackingBean.customerId}">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
+                        <f:selectItems value="#{customerBackingBean.customers}" var="customer" itemValue="#{customer.id}" itemLabel="#{customer.firstName} #{customer.lastName}"/>
+                    </h:selectOneMenu>
+                </div>
+                <h:commandButton class="submitButton" value="Submit" action="#{checkoutBackingBean.addCheckout}"/>
             </h:form>
         </div>
     </body>

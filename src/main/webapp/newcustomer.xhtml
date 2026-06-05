@@ -8,24 +8,20 @@
       <h:head>
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
       	<h:outputStylesheet name="css/output.css"/>
-        <title>newcustomer</title>
+		<h:outputStylesheet name="css/form.css"/>
+        <title>New Customer</title>
       </h:head>
       
       <body>
 		<ui:include src="/WEB-INF/topnav.xhtml"/>
-		<ui:insert name="aah"/>
       	<div id="content">
-      		<h:messages id="messages2" globalOnly="false"/>
-      		<h:form id="addcustomer">
-      			<h2>First Name:</h2>
-      			<h:inputText id="inputFirstName" value="#{customerBackingBean.firstName}"
-      			required="true"/>
-      			<h2>Last Name:</h2>
-      			<h:inputText id="inputLastName" value="#{customerBackingBean.lastName}"
-      			required="true"/>
-      			<br/>
-				<br/>
-      			<h:commandButton id="submitButton" value="Submit" action="#{customerBackingBean.addCustomer}"/>
+      		<h2>New Customer:</h2>
+      		<h:form id="new_customer">
+				<h:messages id="messages2" globalOnly="false"/>
+      			<h:panelGroup id="dynamic_form" class="dynamic_form">
+					<ui:include id="formholder" src="/WEB-INF/newcustomerform.xhtml"/>
+				</h:panelGroup>
+				<h:commandButton class="submitButton" value="Submit" action="#{customerBackingBean.addCustomer}"/>
       		</h:form>
       	</div>
      	<br style="clear: both"/>
