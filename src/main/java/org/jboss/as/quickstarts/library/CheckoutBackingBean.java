@@ -12,30 +12,30 @@ import jakarta.inject.Named;
 @Named
 @ViewScoped
 public class CheckoutBackingBean implements Serializable {
-    private Long bookId;
+    private Long itemId;
     private Long customerId;
 
     @Inject
     private CheckoutResource cr;
     @Inject
-    private BookResource br;
+    private ItemResource resource;
     @Inject
     private CustomerResource customerResource;
 
     private List<Checkout> checkouts;
-    private List<Book> availableBooks;
+    private List<LibraryItem> availableItems;
 
     private Checkout selectedCheckout;
 
     /**
      * Getters and setters
      */
-    public Long getBookId() {
-        return bookId;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public Long getCustomerId() {
@@ -50,8 +50,8 @@ public class CheckoutBackingBean implements Serializable {
         return this.checkouts;
     }
 
-    public List<Book> getAvailableBooks() {
-        return this.availableBooks;
+    public List<LibraryItem> getAvailableItems() {
+        return this.availableItems;
     }
 
     public Checkout getSelectedCheckout() {
@@ -65,33 +65,35 @@ public class CheckoutBackingBean implements Serializable {
     @PostConstruct
     public void init() {
         checkouts = cr.getCheckoutList();
-        availableBooks = br.getAvailableBookList();
+        availableItems = resource.getAvailableItemList();
     }
 
     public String addCheckout() {
-        // Retrieves book and customer objects based on their selected ID's, and creates
+        // Retrieves item and customer objects based on their selected ID's, and creates
         // a new checkout object
-        Book book = br.getBookById(bookId);
+        LibraryItem item = resource.getItemById(itemId);
         Customer customer = customerResource.getCustomerById(customerId);
-        Checkout checkout = new Checkout(book, customer);
+        Checkout checkout = new Checkout(item, customer);
 
         // Creates a new checkout record and updates the list
         cr.createCheckout(checkout);
         checkouts = cr.getCheckoutList();
 
-        // Updates the available flag of the book to false and updates it's entry in the database
-        book.setAvailable(false);
-        br.updateBook(bookId, book);
-        availableBooks = br.getAvailableBookList();
+        // Sets the item to unavailable and updates the database
+        resource.setUnavailable(
+            item.getId()
+        );
+        availableItems = resource.getAvailableItemList();
 
         return "checkout?faces-redirect=true";
     }
 
-    public String returnBook() {
-        // Sets the book to available and updates the database
-        Book returningBook = selectedCheckout.getBook();
-        returningBook.setAvailable(true);
-        br.updateBook(returningBook.getId(), returningBook);
+    public String returnItem() {
+        // Sets the item to available and updates the database
+        resource.setAvailable(
+            selectedCheckout.getItem().getId()
+        );
+        availableItems = resource.getAvailableItemList();
 
         // Deletes the checkout record from the database and refreshes the list
         cr.deleteCheckout(selectedCheckout.getId());

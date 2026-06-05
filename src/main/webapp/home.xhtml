@@ -15,39 +15,40 @@
 		<ui:include src="/WEB-INF/topnav.xhtml"/>
 		<ui:insert name="aah"/>
       	<div class="content">
-      		<h1>Library</h1>
 			<h:form id="bookTable">
 				<h:messages id="messages" globalOnly="false"/>
 				<br/>
-				<h:dataTable value="#{library.books}" var="book">
+				<h:dataTable value="#{library.items}" var="item">
 					<h:column>
 						<f:facet name="header">ID</f:facet>
-						<h:outputText value="#{book.id}"/>
+						<h:outputText value="#{item.id}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Type</f:facet>
+						<h:outputText value="#{item.type}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Title</f:facet>
-						<h:outputText value="#{book.title}"/>
+						<h:outputText value="#{item.title}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Author</f:facet>
-						<h:outputText value="#{book.author}"/>
+						<h:outputText value="#{item.type eq 'book' ? item.author : '-'}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Duration</f:facet>
+						<h:outputText value="#{item.type eq 'dvd' ? item.duration : '-'}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Genre</f:facet>
-						<h:outputText value="#{book.genre}"/>
+						<h:outputText value="#{item.genre}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Available</f:facet>
-						<h:outputText value="#{book.available ? 'y' : 'n'}"/>
-					</h:column>
-					<h:column>
-						<f:facet name="header">Actions</f:facet>
-						<h:commandButton value="Delete" action="#{library.deleteBook}">
-							<f:setPropertyActionListener target="#{library.selectedBook}" value="#{book}"/>
-						</h:commandButton>
-						<h:commandButton value="Edit" action="editbook?faces-redirect=true">
-							<f:setPropertyActionListener target="#{library.selectedBook}" value="#{book}"/>
-						</h:commandButton>
+						<h:outputText 
+							styleClass="#{item.available ? 'outputTextAvailable' : 'outputTextUnavailable'}"
+							value="#{item.available ? 'y' : 'n'}"
+						/>
 					</h:column>
 				</h:dataTable>
 			</h:form>

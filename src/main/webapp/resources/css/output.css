@@ -1,13 +1,19 @@
 :root {
   --bg: #ffffff;
+  --alternate_row_bg: #e0e0eb;
   --text: #222222;
   --primary: #0d4efd;
+  --bg_available: #77ff52;
+  --bg_unavailable: #ff5757;
 }
 
 [data-theme=dark] {
   --bg: #404040;
+  --alternate_row_bg: #5a5a8c;
   --text: #f1f1f1;
   --primary: #66b2ff;
+  --bg_available: #008000;
+  --bg_unavailable: #990000;
 }
 
 body {
@@ -23,6 +29,10 @@ table {
 
 th {
   border-bottom: solid;
+}
+
+tr:nth-child(even) {
+  background: var(--alternate_row_bg);
 }
 
 .topnav {
@@ -50,7 +60,7 @@ th {
   color: white;
 }
 
-.themeToggleContainer {
+#themeToggleContainer {
   height: 100%;
   aspect-ratio: 1/1;
   margin-left: auto;
@@ -61,4 +71,12 @@ th {
 #themeToggle {
   height: 100%;
   display: block;
+}
+
+td:has(.outputTextAvailable) {
+  background-color: var(--bg_available);
+}
+
+td:has(.outputTextUnavailable) {
+  background-color: var(--bg_unavailable);
 }

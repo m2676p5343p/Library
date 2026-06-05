@@ -9,20 +9,27 @@
       	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
       	<h:outputStylesheet name="css/output.css"/>
 		<h:outputStylesheet name="css/form.css"/>
-        <title>New Customer</title>
+        <title>New Item</title>
       </h:head>
       
       <body>
 		<ui:include src="/WEB-INF/topnav.xhtml"/>
       	<div id="content">
-      		<h2>New Customer:</h2>
-      		<h:form id="new_customer">
+			<h2>New Item:</h2>
+      		<h:form id="new_item">
 				<h:messages id="messages2" globalOnly="false"/>
-      			<h:panelGroup id="dynamic_form" class="dynamic_form">
-					<ui:include id="formholder" src="/WEB-INF/newcustomerform.xhtml"/>
+				<div class="inputPair">
+					<h:outputLabel for="typeSelector" value="Type:"/>
+					<h:selectOneMenu id="typeSelector" value="#{newItemBackingBean.newItemType}">
+						<f:selectItems value="#{newItemBackingBean.types}" var="type" itemValue="#{type}"/>
+						<f:ajax event="change" execute="@this" render="dynamic_form"/>
+					</h:selectOneMenu>
+				</div>
+				<h:panelGroup id="dynamic_form" class="dynamic_form">
+					<ui:include id="formholder" src="#{newItemBackingBean.formPath}"/>
 				</h:panelGroup>
-				<h:commandButton class="submitButton" value="Submit" action="#{customerBackingBean.addCustomer}"/>
-      		</h:form>
+				<h:commandButton class="submitButton" value="Submit" action="#{newItemBackingBean.addItem}"/>
+			</h:form>
       	</div>
      	<br style="clear: both"/>
       </body>

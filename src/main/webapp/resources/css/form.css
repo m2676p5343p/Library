@@ -1,0 +1,28 @@
+.inputPair {
+    display: grid;
+    grid-template-columns: 90px 220px;
+    align-items: center;
+    column-gap: 12px;
+}
+.inputPair input,
+.inputPair select {
+    height: 36px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.dynamic_form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.submitButton {
+    height: 36px;
+    width: 90px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+}

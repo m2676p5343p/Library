@@ -14,7 +14,7 @@
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- the Maven project should use the minimum Java SE version supported -->
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>25</maven.compiler.release>
     <!-- the version for the Server -->
     <version.server>40.0.0.Final</version.server>
     <version.bom.ee>${version.server}</version.bom.ee>
@@ -92,28 +92,6 @@
 				</execution>
 			</executions>
 		</plugin>
-		
-  		<plugin>
-  			<groupId>us.hebi.sass</groupId>
-            <artifactId>sass-cli-maven-plugin</artifactId>
-            <version>1.0.4</version>
-            <configuration>
-            	<sassVersion>1.99.0</sassVersion>
-            	<args>
-            		<arg>${project.basedir}/src/scss/input.scss:${project.basedir}/src/main/webapp/resources/css/output.css</arg>
-            		<arg>--no-source-map</arg>
-            	</args>
-            </configuration>
-            <executions>
-            	<execution>
-            		<id>sass-exec</id>
-            		<phase>generate-resources</phase>
-            		<goals>
-            			<goal>run</goal>
-            		</goals>
-            	</execution>
-            </executions>
-  		</plugin>
   	</plugins>
   </build>
   
