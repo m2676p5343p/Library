@@ -15,6 +15,11 @@ CREATE TABLE dvds (
     duration FLOAT NOT NULL
 );
 
+CREATE TABLE magazines (
+    id BIGINT PRIMARY KEY REFERENCES library_items(id),
+    numPages INT NOT NULL
+);
+
 CREATE TABLE customers(
     id BIGSERIAL PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
@@ -26,7 +31,8 @@ INSERT INTO library_items(title, genre, available) VALUES
 ('Royal Assassin', 'High Fantasy', TRUE),
 ('Blood Over Bright Haven', 'Dark Academia', TRUE),
 ('Project Hail Mary', 'Science Fiction', TRUE),
-('Alien', 'Horror', TRUE);
+('Alien', 'Horror', TRUE),
+('Better Homes and Gardens', 'Home Improvement', TRUE);
 
 INSERT INTO books(id, author) VALUES
 (1, 'Robin Hobb'),
@@ -36,6 +42,9 @@ INSERT INTO books(id, author) VALUES
 INSERT INTO dvds(id, duration) VALUES
 (4, 156),
 (5, 116);
+
+INSERT INTO magazines(id, numPages) VALUES 
+(6, 67);
  
 INSERT INTO customers(firstName, lastName) VALUES
 ('Max', 'Price'),

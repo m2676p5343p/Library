@@ -22,6 +22,7 @@ public class NewItemBackingBean implements Serializable {
     private String author;
     private String genre;
     private float duration;
+    private int numPages;
 
     // The type of the new item
     private String newItemType;
@@ -37,6 +38,8 @@ public class NewItemBackingBean implements Serializable {
             return "/WEB-INF/newbookform.xhtml";
         } else if ("dvd".equals(newItemType)) {
             return "/WEB-INF/newdvdform.xhtml";
+        } else if ("magazine".equals(newItemType)) {
+            return "WEB-INF/newmagazineform.xhtml";
         }
         return null;
     }
@@ -83,6 +86,14 @@ public class NewItemBackingBean implements Serializable {
         this.duration = duration;
     }
 
+    public int getNumPages() {
+        return this.numPages;
+    }
+
+    public void setNumPages(int numPages) {
+        this.numPages = numPages;
+    }
+
     public String getNewItemType() {
         return this.newItemType;
     }
@@ -97,7 +108,7 @@ public class NewItemBackingBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        types = new String[] {"book", "dvd"};
+        types = new String[] {"book", "dvd", "magazine"};
         newItemType = types[0];
     }
 
@@ -108,6 +119,9 @@ public class NewItemBackingBean implements Serializable {
             }
             else if (newItemType.equals("dvd")) {
                 newItem = new Dvd(title, duration, genre, true);
+            }
+            else if (newItemType.equals("magazine")) {
+                newItem = new Magazine(title, genre, true, numPages);
             }
             resource.createItem(newItem);
             return "home?faces-redirect=true";

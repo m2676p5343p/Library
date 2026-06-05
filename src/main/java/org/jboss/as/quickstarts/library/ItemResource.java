@@ -19,7 +19,7 @@ public class ItemResource {
      */
     public List<LibraryItem> getItemList() {
         return em.createQuery(
-            "SELECT i FROM LibraryItem i ORDER BY id",
+            "SELECT i FROM LibraryItem i ORDER BY i.id",
             LibraryItem.class
         ).getResultList();
     }

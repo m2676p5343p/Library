@@ -25,12 +25,11 @@ public class Dvd extends LibraryItem {
 
     public Dvd(String title, float duration, String genre, boolean available)
     throws NullPointerException, IllegalArgumentException {
+        super(title, genre, available);
         if (duration <= 0) {
             throw new IllegalArgumentException("Duration must be greater than 0");
         }
         this.duration = duration;
-
-        super(title, genre, available);
     }
 
     /**

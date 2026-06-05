@@ -1,6 +1,5 @@
 package org.jboss.as.quickstarts.library;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
