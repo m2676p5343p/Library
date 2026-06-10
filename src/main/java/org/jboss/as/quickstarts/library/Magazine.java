@@ -3,18 +3,18 @@ package org.jboss.as.quickstarts.library;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="magazines")
-@PrimaryKeyJoinColumn(name="id")
+@DiscriminatorValue("magazine")
 public class Magazine extends LibraryItem {
     /**
      * Fields
      */
-    @Column(nullable=false)
+    @Column
     private int numPages;
 
     /**
@@ -42,11 +42,6 @@ public class Magazine extends LibraryItem {
 
     public void setNumPages(int numPages) {
         this.numPages = numPages;
-    }
-
-    @Override
-    public String getType() {
-        return "magazine";
     }
 
     @Override

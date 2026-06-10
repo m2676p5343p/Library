@@ -3,18 +3,18 @@ package org.jboss.as.quickstarts.library;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="dvds")
-@PrimaryKeyJoinColumn(name="id")
+@DiscriminatorValue("dvd")
 public class Dvd extends LibraryItem {
     /**
 	 * Fields
 	 */
-	@Column(nullable = false)
+	@Column
 	private float duration;
 
     /**
@@ -44,11 +44,6 @@ public class Dvd extends LibraryItem {
             throw new IllegalArgumentException("Duration must be greater than 0");
         }
         this.duration = duration;
-    }
-
-    @Override
-    public String getType() {
-        return "dvd";
     }
 
     @Override

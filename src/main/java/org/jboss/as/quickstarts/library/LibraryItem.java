@@ -3,6 +3,7 @@ package org.jboss.as.quickstarts.library;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +16,8 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="library_items")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="category")
 public abstract class LibraryItem {
     /**
      * Fields
@@ -35,15 +37,8 @@ public abstract class LibraryItem {
 	@Column(nullable = false)
 	protected boolean available;
 
-    /**
-     * This field only exists to backup the getType() method. When the frontend accesses
-     * item.type, it calls getType which is an abstract method that must be implemented
-     * by subclasses. The subclass implementation returns a String representing the type
-     * of object it is ('book', 'dvd', etc.)
-     * Marked @Transient so it is not stored in the database
-     */
-    @Transient
-    private String type;
+    @Column(name = "category", insertable = false, updatable = false)
+    private String category;
 
     /**
      * Constructors
@@ -106,12 +101,9 @@ public abstract class LibraryItem {
         this.available = available;
     }
 
-    /**
-     * Abstract method required to be implemented by subtypes. Subtypes will
-     * return a String representing what kind of library item they are
-     */
-    @Transient
-    public abstract String getType();
+    public String getCategory() {
+        return category;
+    }
 
     /**
      * Doesn't compare id's since there is no way for duplicate id's to exist

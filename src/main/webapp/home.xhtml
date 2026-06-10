@@ -24,8 +24,8 @@
 						<h:outputText value="#{item.id}"/>
 					</h:column>
 					<h:column>
-						<f:facet name="header">Type</f:facet>
-						<h:outputText value="#{item.type}"/>
+						<f:facet name="header">Category</f:facet>
+						<h:outputText value="#{item.category}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Title</f:facet>
@@ -33,11 +33,15 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">Author</f:facet>
-						<h:outputText value="#{item.type eq 'book' ? item.author : '-'}"/>
+						<h:outputText value="#{item.category eq 'book' ? item.author : '-'}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Duration</f:facet>
-						<h:outputText value="#{item.type eq 'dvd' ? item.duration : '-'}"/>
+						<h:outputText value="#{item.category eq 'dvd' ? item.duration : '-'}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header"># Pages</f:facet>
+						<h:outputText value="#{item.category eq 'magazine' ? item.numPages : '-'}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Genre</f:facet>

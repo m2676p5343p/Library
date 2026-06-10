@@ -26,8 +26,8 @@
                         <h:outputText value="#{checkout.customer.lastName}"/>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Type</f:facet>
-                        <h:outputText value="#{checkout.item.type}"/>
+                        <f:facet name="header">Category</f:facet>
+                        <h:outputText value="#{checkout.item.category}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Title</f:facet>
@@ -42,9 +42,9 @@
                         <h:outputText value="#{checkout.dueDate}"/>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Overdue</f:facet>
+                        <f:facet name="header">Status</f:facet>
                         <h:outputText
-                            value="#{checkout.overdue ? 'y' : 'n'}"
+                            value="#{checkout.overdue ? 'Overdue' : '-'}"
                             styleClass="#{checkout.overdue ? 'outputTextUnavailable' : 'outputTextAvailable'}"
                         />
                     </h:column>
@@ -60,7 +60,7 @@
                     <h:outputLabel for="itemSelect" value="Item:"/>
                     <h:selectOneMenu id="itemSelect" value="#{checkoutBackingBean.itemId}">
                         <f:selectItem itemValue="#{null}" itemLabel="-- select one --" noSelectionOption="true"/>
-                        <f:selectItems value="#{checkoutBackingBean.availableItems}" var="item" itemValue="#{item.id}" itemLabel="#{item.type} : #{item.title}"/>
+                        <f:selectItems value="#{checkoutBackingBean.availableItems}" var="item" itemValue="#{item.id}" itemLabel="#{item.category} : #{item.title}"/>
                     </h:selectOneMenu>
                 </div>
                 <div class="inputPair">
