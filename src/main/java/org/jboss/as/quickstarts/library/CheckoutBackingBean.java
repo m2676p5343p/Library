@@ -1,7 +1,9 @@
 package org.jboss.as.quickstarts.library;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -37,6 +39,9 @@ public class CheckoutBackingBean implements Serializable {
 
     // Stores all items that are currently available
     private List<LibraryItem> availableItems;
+
+    // Stores all customers who are in good standing (no overdue loans)
+    private List<Customer> goodStandingCustomers;
 
     // Stores the selected checkout for modification (e.g. if the user opts to
     // return an item)
@@ -77,6 +82,10 @@ public class CheckoutBackingBean implements Serializable {
         this.selectedCheckout = selectedCheckout;
     }
 
+    public List<Customer> getGoodStandingCustomers() {
+        return this.goodStandingCustomers;
+    }
+
     /**
      * Populates the checkouts and availableItems Lists when the Bean is initialized
      */
@@ -84,6 +93,7 @@ public class CheckoutBackingBean implements Serializable {
     public void init() {
         checkouts = checkoutResource.getCheckoutList();
         availableItems = itemResource.getAvailableItemList();
+        goodStandingCustomers = checkoutResource.getGoodStandingCustomers();
     }
 
     /**

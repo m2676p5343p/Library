@@ -8,4 +8,4 @@ COPY server/module.xml ${JBOSS_HOME}/modules/system/layers/base/org/postgresql/m
 COPY server/postgresql-42.7.11.jar ${JBOSS_HOME}/modules/system/layers/base/org/postgresql/main/
 COPY server/configure-datasource.cli /opt/jboss/configure-datasource.cli
 
-RUN ${JBOSS_HOME}/bin/jboss-cli.sh --file=/opt/jboss/configure-datasource.cli
+#RUN ${JBOSS_HOME}/bin/jboss-cli.sh --file=/opt/jboss/configure-datasource.cli
