@@ -10,6 +10,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  wildfly:
+    build: .
+    image: quay.io/wildfly/wildfly:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /home/
+    depends_on:
+      db:
+        condition: service_started
 
 volumes:
   pgdata:

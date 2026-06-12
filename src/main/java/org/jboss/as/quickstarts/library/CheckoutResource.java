@@ -36,6 +36,21 @@ public class CheckoutResource {
     }
 
     /**
+     * Returns a list of customers who do not have any overdue loans
+     */
+    public List<Customer> getGoodStandingCustomers() {
+        return em.createQuery(
+            "SELECT c FROM Customer c " +
+            "WHERE NOT EXISTS (" +
+            "SELECT o FROM Checkout o " +
+            "WHERE o.customer.id = c.id " +
+            "AND o.dueDate < CURRENT_DATE" +
+            ")",
+            Customer.class
+        ).getResultList();
+    }
+
+    /**
      * Adds a new checkout object to the database
      */
     @Transactional
